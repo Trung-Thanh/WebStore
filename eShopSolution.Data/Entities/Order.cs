@@ -21,6 +21,7 @@ namespace eShopSolution.Data.Entities
         public string ShipPhoneNumber { set; get; }
         public OrderStatus Status { set; get; }
 
+        // the hien rang mot oder co mot list nhung order detail
         public List<OrderDetail> OrderDetails { get; set; }
     }
 }

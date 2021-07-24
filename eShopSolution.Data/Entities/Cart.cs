@@ -13,6 +13,7 @@ namespace eShopSolution.Data.Entities
 
         public Guid UserId { get; set; }
 
+        // mỗi một trường cart thì có 1 hàng
         public Product Product { get; set; }
 
         public DateTime DateCreated { get; set; }

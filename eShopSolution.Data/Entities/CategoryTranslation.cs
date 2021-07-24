@@ -6,7 +6,6 @@ namespace eShopSolution.Data.Entities
 {
     public class CategoryTranslation
     {
-        public int Id { set; get; }
         public int CategoryId { set; get; }
 
         // các thông tin cơ bản về category

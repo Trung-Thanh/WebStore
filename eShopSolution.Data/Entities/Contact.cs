@@ -20,3 +20,4 @@ namespace eShopSolution.Data.Entities
 
     }
 }
+ 

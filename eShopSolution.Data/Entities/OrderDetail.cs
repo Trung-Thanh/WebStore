@@ -16,6 +16,7 @@ namespace eShopSolution.Data.Entities
         public decimal Price { set; get; }
 
         // order nay la dinh danh lay them thong tin ngay thang cua no
+        // ngoai ra con the hien mql mot nhieu, 1 detail chi la thuoc ve 1 order
         public Order Order { get; set; }
 
         // bo sung cho 3 thuoc tinh co ban cua product tren

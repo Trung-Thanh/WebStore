@@ -5,7 +5,7 @@ using System.Text;
 
 namespace eShopSolution.Data.Entities
 {
-    class Promotion
+    public class Promotion
     {
         // chính sách khuyến mại
         public int Id { set; get; }
