@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eShopSolution.Data.Configurations
 {
-    class ProductTranslationConfiguraiton : IEntityTypeConfiguration<ProductTranslation>
+    class ProductTranslationConfiguration : IEntityTypeConfiguration<ProductTranslation>
     {
         public void Configure(EntityTypeBuilder<ProductTranslation> builder)
         {

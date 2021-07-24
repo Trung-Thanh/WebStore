@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eShopSolution.Data.Configurations
 {
-    class PromotionConfiguartion : IEntityTypeConfiguration<Promotion>
+    class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
     {
         public void Configure(EntityTypeBuilder<Promotion> builder)
         {
