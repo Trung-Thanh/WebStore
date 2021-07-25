@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebStore", "MyWebStore\MyWebStore.csproj", "{16DCD90E-AB9D-4CAC-844C-93BA2BC3FB88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopSolution.Data", "eShopSolution.Data\eShopSolution.Data.csproj", "{19E8774E-FD1C-4B19-B0D2-623EAD43B222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.Data", "eShopSolution.Data\eShopSolution.Data.csproj", "{19E8774E-FD1C-4B19-B0D2-623EAD43B222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopSolution.Appication", "eShopSolution.Appication\eShopSolution.Appication.csproj", "{E4F200BF-23C4-4897-BB4D-523ACF510A4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.Appication", "eShopSolution.Appication\eShopSolution.Appication.csproj", "{E4F200BF-23C4-4897-BB4D-523ACF510A4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
