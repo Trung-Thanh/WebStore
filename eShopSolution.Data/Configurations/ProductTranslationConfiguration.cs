@@ -13,6 +13,8 @@ namespace eShopSolution.Data.Configurations
         {
             builder.ToTable("ProductTranslations");
             builder.HasKey(x => new { x.ProductId, x.LanguageId });
+
+            builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
             builder.HasOne(x => x.Product).WithMany(x => x.productTranslations).HasForeignKey(x => x.ProductId);
             builder.HasOne(x => x.Language).WithMany(x => x.productTranslations).HasForeignKey(x => x.LanguageId);
 
@@ -22,7 +24,8 @@ namespace eShopSolution.Data.Configurations
 
             builder.Property(x => x.Details).HasMaxLength(500);
 
-            builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
+            // thống nhất là language id có dội dài 5, nếu k giống nhau sẽ không tạo được khóa ngoại
+            
 
             //throw new NotImplementedException();
         }

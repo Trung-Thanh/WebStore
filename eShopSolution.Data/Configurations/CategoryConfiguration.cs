@@ -14,6 +14,7 @@ namespace eShopSolution.Data.Configurations
         {
             builder.ToTable("Categorys");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.IsShowOnHome).IsRequired();
             builder.Property(x => x.Status).HasDefaultValue(Status.Active);
             //throw new NotImplementedException();
