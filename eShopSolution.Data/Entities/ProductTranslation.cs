@@ -22,7 +22,7 @@ namespace eShopSolution.Data.Entities
         public string SeoAlias { get; set; }
 
         // mã ngôn ngữ của, 1 record nào đó của bảng ngôn ngữ
-        public string LanguageId { set; get; }
+        public int LanguageId { set; get; }
 
         // nhiền hơn về thông tin sản phẩm, số lượng, giá ... (không bị ảnh hưởng bởi ngôn ngữ)
         public Product Product { get; set; }
