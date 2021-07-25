@@ -16,11 +16,11 @@ namespace eShopSolution.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now);
-            builder.Property(x => x.ShipName).IsRequired();
-            builder.Property(x => x.ShipAddress).IsRequired();
+            builder.Property(x => x.ShipName).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.ShipAddress).IsRequired().HasMaxLength(200);
             builder.Property(x => x.ShipEmail).IsUnicode(false).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.ShipPhoneNumber).IsRequired();
-            builder.Property(x => x.Status).HasDefaultValue(Status.InActive);
+            builder.Property(x => x.ShipPhoneNumber).IsRequired().HasMaxLength(15);
+            builder.Property(x => x.Status).HasDefaultValue(OrderStatus.InProgress);
             //throw new NotImplementedException();
         }
     }
