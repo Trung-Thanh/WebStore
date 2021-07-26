@@ -15,6 +15,7 @@ namespace eShopSolution.Data.Configurations
             builder.HasKey(x => new { x.ProductId, x.LanguageId });
 
             builder.Property(x => x.LanguageId).IsUnicode(false).IsRequired().HasMaxLength(5);
+
             builder.HasOne(x => x.Product).WithMany(x => x.productTranslations).HasForeignKey(x => x.ProductId);
             builder.HasOne(x => x.Language).WithMany(x => x.productTranslations).HasForeignKey(x => x.LanguageId);
 

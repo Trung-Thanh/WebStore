@@ -14,7 +14,6 @@ namespace eShopSolution.Data.Configurations
             builder.ToTable("Languages");
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).UseIdentityColumn();
 
             // đặt cho id la char 5
             builder.Property(x => x.Id).IsRequired().IsUnicode(false).HasMaxLength(5);
