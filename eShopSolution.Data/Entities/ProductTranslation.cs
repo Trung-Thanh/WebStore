@@ -6,9 +6,6 @@ namespace eShopSolution.Data.Entities
 {
     public class ProductTranslation
     {
-        // khóa chính của bảng
-        public int Id { set; get; }
-
         // 1 ma product co the có nhiefu record nên k thể làm khóa chính
         public int ProductId { set; get; }
 
@@ -22,7 +19,7 @@ namespace eShopSolution.Data.Entities
         public string SeoAlias { get; set; }
 
         // mã ngôn ngữ của, 1 record nào đó của bảng ngôn ngữ
-        public int LanguageId { set; get; }
+        public string LanguageId { set; get; }
 
         // nhiền hơn về thông tin sản phẩm, số lượng, giá ... (không bị ảnh hưởng bởi ngôn ngữ)
         public Product Product { get; set; }
