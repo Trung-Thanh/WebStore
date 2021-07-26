@@ -13,6 +13,7 @@ namespace eShopSolution.Data.Entities
 
         // user id là khóa ngoại
         public Guid UserId { set; get; }
+        public AppUser appUser { get; set; }
 
         // thong tin người nhận
         public string ShipName { set; get; }
