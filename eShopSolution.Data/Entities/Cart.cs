@@ -12,6 +12,7 @@ namespace eShopSolution.Data.Entities
         public decimal Price { set; get; }
 
         public Guid UserId { get; set; }
+        public AppUser appUser { get; set; }
 
         // mỗi một trường cart thì có 1 hàng
         public Product Product { get; set; }
