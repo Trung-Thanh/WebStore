@@ -1,6 +1,6 @@
-﻿using eShopSolution.Appication.Catalog.products.DataTransferObject;
-using eShopSolution.Appication.Catalog.products.DataTransferObject.forManager;
-using eShopSolution.Appication.DataTransferObject;
+﻿using eShopSolution.ViewModels.Catalog;
+using eShopSolution.ViewModels.Catalog.forManager;
+using eShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,8 +22,6 @@ namespace eShopSolution.Appication.Catalog.products
         Task AddViewCount(int productId);
 
         Task<int> Delete(int productID);
-
-        Task<List<ProductViewModel>> GetAll();
 
         Task<PageResult<ProductViewModel>> GetAllPaging(MngProductPagingRequest request);  
     }

@@ -1,9 +1,9 @@
-﻿using eShopSolution.Appication.DataTransferObject;
+﻿using eShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Appication.Catalog.products.DataTransferObject.forManager
+namespace eShopSolution.ViewModels.Catalog.forManager
 {
     public class MngProductPagingRequest : PagingRequestBase
     {

@@ -1,7 +1,4 @@
 ﻿using eShopColution.Utilities;
-using eShopSolution.Appication.Catalog.products.DataTransferObject;
-using eShopSolution.Appication.Catalog.products.DataTransferObject.forManager;
-using eShopSolution.Appication.DataTransferObject;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using System;
@@ -10,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using eShopSolution.ViewModels.Catalog.forManager;
+using eShopSolution.ViewModels.Catalog;
+using eShopSolution.ViewModels.Common;
 
 namespace eShopSolution.Appication.Catalog.products
 {
@@ -61,11 +61,6 @@ namespace eShopSolution.Appication.Catalog.products
                 throw new eShopSolutionExcreption($"can not find a product with id : {productID}");
             _context.Products.Remove(product);
             return await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<ProductViewModel>> GetAll()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<PageResult<ProductViewModel>> GetAllPaging(MngProductPagingRequest request)
@@ -122,17 +117,43 @@ namespace eShopSolution.Appication.Catalog.products
 
         public async Task<int> Update(ProductUpdateRequest request)
         {
-            throw new NotImplementedException();
+            // khong dung de sua thong tin, chi dung de kiem tra xem co tim thay khong
+            var product = await _context.Products.FindAsync(request.id);
+            var productTranslation = await _context.productTranslations.FirstOrDefaultAsync(x => x.ProductId == request.id && x.LanguageId == request.LanguageId);
+            if(product is null || productTranslation is null)
+            {
+                throw new eShopSolutionExcreption($"can not find a product with id = {request.id}");
+            }
+            productTranslation.Description = request.Description;
+            productTranslation.Details = request.Details;
+            productTranslation.Name = request.Name;
+            productTranslation.SeoAlias = request.SeoAlias;
+            productTranslation.SeoDescription = request.SeoDescription;
+            productTranslation.SeoTitle = request.SeoTitle;
+            return await _context.SaveChangesAsync();
         }
 
-        public Task<bool> UpdatePrice(int prodcutId, decimal newPrice)
+        public async Task<bool> UpdatePrice(int prodcutId, decimal newPrice)
         {
-            throw new NotImplementedException();
+            // chua nhat thien san pham do phai co trong translation roi
+            var product = await _context.Products.FindAsync(prodcutId);
+            if(product is null)
+            {
+                throw new eShopSolutionExcreption($"can not find a product with id = {prodcutId}");
+            }
+            product.Price = newPrice;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> UpdateStock(int prodcutId, int addedQuantity)
+        public async Task<bool> UpdateStock(int prodcutId, int addedQuantity)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(prodcutId);
+            if (product is null)
+            {
+                throw new eShopSolutionExcreption($"can not find a product with id = {prodcutId}");
+            }
+            product.Stock += addedQuantity;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

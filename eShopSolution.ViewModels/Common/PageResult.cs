@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Appication.DataTransferObject
+namespace eShopSolution.ViewModels.Common
 {
     public class PageResult<T>
     {
