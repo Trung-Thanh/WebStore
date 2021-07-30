@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShopColution.Utilities.Constants;
+using eShopSolution.Appication.Catalog.products;
+using eShopSolution.Data.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +27,11 @@ namespace eShopSolution.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<EShopDBContext>(options=>options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.mainConllectionString)));
+
+            // khai bao
+            services.AddTransient<IPublicProductService, PublicProductService>();
+
             services.AddControllersWithViews();
         }
 
@@ -50,7 +59,7 @@ namespace eShopSolution.WebApi
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Product}/{action=Get}/{id?}");
             });
         }
     }

@@ -1,4 +1,4 @@
-﻿using eShopColution.Utilities;
+﻿using eShopColution.Utilities.Exceptions;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using System;
@@ -18,11 +18,11 @@ using eShopSolution.ViewModels.Catalog.product;
 
 namespace eShopSolution.Appication.Catalog.products
 {
-    class ManageProductSevice : IManageProductSevice
+    class ManageProductService : IManageProductSevice
     {
         private readonly EShopDBContext _context;
         private readonly IStorageService _storageService;
-        public ManageProductSevice(EShopDBContext context, IStorageService storageService)
+        public ManageProductService(EShopDBContext context, IStorageService storageService)
         {
             this._context = context;
             _storageService = storageService;

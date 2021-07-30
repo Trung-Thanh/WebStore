@@ -15,6 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    // profile nay ten la nhu ben duoi, chay duoc https va http
     "eShopSolution.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,

@@ -11,13 +11,39 @@ using eShopSolution.ViewModels.Catalog.forPublic;
 
 namespace eShopSolution.Appication.Catalog.products
 {
-    class PublicProductSevice : IPublicProductService
+    public class PublicProductService : IPublicProductService
     {
         private readonly EShopDBContext _context;
-        public PublicProductSevice(EShopDBContext context)
+        public PublicProductService(EShopDBContext context)
         {
             this._context = context;
         }
+
+        public async Task<List<CMroductViewModel>> GetAll()
+        {
+            var query = from p in _context.Products
+                        join pt in _context.productTranslations on p.Id equals pt.ProductId
+                        select new { p, pt};
+
+            var data = await query.Select(x => new CMroductViewModel()
+                {
+                    Id = x.p.Id,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
+                    Name = x.pt.Name,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount
+                }).ToListAsync();
+            return data;
+        }
+
         public async Task<PageResult<CMroductViewModel>> GetAllByCategoryId(PlProductPagingRequest request)
         {
             var query = from p in _context.Products

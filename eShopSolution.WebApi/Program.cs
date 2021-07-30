@@ -20,6 +20,7 @@ namespace eShopSolution.WebApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    // cau hinh luu trong file startup
                     webBuilder.UseStartup<Startup>();
                 });
     }
