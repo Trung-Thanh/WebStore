@@ -18,7 +18,7 @@ namespace eShopSolution.Appication.Catalog.products
         {
             this._context = context;
         }
-        public async Task<PageResult<ProductViewModel>> GetAllByCategoryId(PlProductPagingRequest request)
+        public async Task<PageResult<CMroductViewModel>> GetAllByCategoryId(PlProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
@@ -36,7 +36,7 @@ namespace eShopSolution.Appication.Catalog.products
             int totalRow = await query.CountAsync();
 
             var data = await query.Skip((request.pageSize - 1) * request.pageSize).Take(request.pageSize)
-                .Select(x => new ProductViewModel()
+                .Select(x => new CMroductViewModel()
                 {
                     Id = x.p.Id,
                     DateCreated = x.p.DateCreated,
@@ -54,7 +54,7 @@ namespace eShopSolution.Appication.Catalog.products
                 }).ToListAsync();
 
             // select and projection
-            var pageResult = new PageResult<ProductViewModel>()
+            var pageResult = new PageResult<CMroductViewModel>()
             {
                 totalRecord = totalRow,
                 Items = data
