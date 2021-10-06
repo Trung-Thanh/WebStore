@@ -12,7 +12,7 @@ namespace eShopSolution.Appication.Catalog.products
 {
     public interface IManageProductSevice
     {
-        // tra ve ma san phan vua tao
+        // return product id 
         Task<int> Create(ProductCreateRequest request);
 
         Task<int> Update(ProductUpdateRequest request);
@@ -25,7 +25,8 @@ namespace eShopSolution.Appication.Catalog.products
 
         Task<int> Delete(int productID);
 
-        Task<PageResult<CMroductViewModel>> GetAllPaging(MngProductPagingRequest request);
+        // this method to get a page of product
+        Task<PageResult<CMProductViewModel>> GetAllPaging(MngProductPagingRequest request);
 
         Task<int> AddImages(int productId, List<FormFile> files);
 
