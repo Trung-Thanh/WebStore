@@ -26,5 +26,7 @@ namespace eShopSolution.WebApi.Controllers
             var product = await _publicProductSeverice.GetAll();
             return Ok(product);
         }
+
+
     }
 }
