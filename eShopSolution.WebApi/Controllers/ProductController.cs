@@ -12,7 +12,10 @@ namespace eShopSolution.WebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+        // decalare iterface work with product public service
         private readonly IPublicProductService _publicProductSeverice;
+        
+        // bellow method will be call form startup class
         public ProductController(IPublicProductService publicProductSeverice)
         {
             _publicProductSeverice = publicProductSeverice;

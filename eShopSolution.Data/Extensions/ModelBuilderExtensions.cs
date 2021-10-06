@@ -48,15 +48,15 @@ namespace eShopSolution.Data.Extensions
                     );
 
             modelBuilder.Entity<Product>().HasData(
-           new Product()
-           {
-               Id = 1,
-               DateCreated = DateTime.Now,
-               OriginalPrice = 100000,
-               Price = 200000,
-               Stock = 0,
-               ViewCount = 0,
-           });
+                  new Product()
+                  {
+                    Id = 1,
+                    DateCreated = DateTime.Now,
+                    OriginalPrice = 100000,
+                    Price = 200000,
+                    Stock = 0,
+                    ViewCount = 0,
+                  });
 
             modelBuilder.Entity<ProductTranslation>().HasData(
                  new ProductTranslation()
@@ -100,13 +100,14 @@ namespace eShopSolution.Data.Extensions
             });
 
             var hasher = new PasswordHasher<AppUser>();
+
             modelBuilder.Entity<AppUser>().HasData(new AppUser
             {
                 Id = adminId,
                 UserName = "admin",
                 NormalizedUserName = "admin",// tên viết thường
-                Email = "tedu.international@gmail.com",
-                NormalizedEmail = "tedu.international@gmail.com",// tên viết thường
+                Email = "vvakemyfresh@gmail.com",
+                NormalizedEmail = "vvakemyfresh@gmail.com",// tên viết thường
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "gymitenglish1"), // hast từ mật khẩu cho truoc
                 SecurityStamp = string.Empty,

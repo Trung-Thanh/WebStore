@@ -62,7 +62,6 @@ namespace eShopSolution.Data.EF
         public DbSet<ProductTranslation> productTranslations { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<ProductsInCategories> ProductsInCategories { get; set; }
-
         public DbSet<ProductImage> productImages { get; set; }
     }
 }

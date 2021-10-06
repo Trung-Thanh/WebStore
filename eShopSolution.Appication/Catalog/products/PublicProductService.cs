@@ -19,13 +19,13 @@ namespace eShopSolution.Appication.Catalog.products
             this._context = context;
         }
 
-        public async Task<List<CMroductViewModel>> GetAll()
+        public async Task<List<CMProductViewModel>> GetAll()
         {
             var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
                         select new { p, pt};
 
-            var data = await query.Select(x => new CMroductViewModel()
+            var data = await query.Select(x => new CMProductViewModel()
                 {
                     Id = x.p.Id,
                     DateCreated = x.p.DateCreated,
@@ -44,7 +44,7 @@ namespace eShopSolution.Appication.Catalog.products
             return data;
         }
 
-        public async Task<PageResult<CMroductViewModel>> GetAllByCategoryId(PlProductPagingRequest request)
+        public async Task<PageResult<CMProductViewModel>> GetAllByCategoryId(PlProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
@@ -61,8 +61,8 @@ namespace eShopSolution.Appication.Catalog.products
             // pagging
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.pageSize - 1) * request.pageSize).Take(request.pageSize)
-                .Select(x => new CMroductViewModel()
+            var data = await query.Skip((request.pageIndex - 1) * request.pageSize).Take(request.pageSize)
+                .Select(x => new CMProductViewModel()
                 {
                     Id = x.p.Id,
                     DateCreated = x.p.DateCreated,
@@ -80,7 +80,7 @@ namespace eShopSolution.Appication.Catalog.products
                 }).ToListAsync();
 
             // select and projection
-            var pageResult = new PageResult<CMroductViewModel>()
+            var pageResult = new PageResult<CMProductViewModel>()
             {
                 totalRecord = totalRow,
                 Items = data
