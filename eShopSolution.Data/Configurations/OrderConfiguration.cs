@@ -18,7 +18,7 @@ namespace eShopSolution.Data.Configurations
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.HasOne(x => x.appUser).WithMany(x => x.Orders).HasForeignKey(x => x.UserId);
 
-            builder.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now);
+            //builder.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now);
             builder.Property(x => x.ShipName).IsRequired().HasMaxLength(200);
             builder.Property(x => x.ShipAddress).IsRequired().HasMaxLength(200);
             builder.Property(x => x.ShipEmail).IsUnicode(false).HasMaxLength(50).IsRequired();

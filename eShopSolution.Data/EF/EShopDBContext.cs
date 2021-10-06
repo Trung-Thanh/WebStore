@@ -34,6 +34,7 @@ namespace eShopSolution.Data.EF
             modelBuilder.ApplyConfiguration(new LanguageConfiguration());
             modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
 
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
@@ -60,5 +61,8 @@ namespace eShopSolution.Data.EF
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<ProductTranslation> productTranslations { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<ProductsInCategories> ProductsInCategories { get; set; }
+
+        public DbSet<ProductImage> productImages { get; set; }
     }
 }

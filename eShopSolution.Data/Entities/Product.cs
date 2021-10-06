@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,5 +19,6 @@ namespace eShopSolution.Data.Entities
         public List<OrderDetail> orderDetails { get; set; }
         public List<Cart> carts { get; set; }
         public List<ProductTranslation> productTranslations { get; set; }
+        public List<ProductImage> productImages { get; set; }
     }
 }
