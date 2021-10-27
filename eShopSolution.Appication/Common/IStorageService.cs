@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace eShopSolution.Appication.Common
 {
     // vỏ lớp StorageService
-    interface IStorageService
+    public interface IStorageService
     {
         // lay url cua file, tham so la filename
         string GetFileUrl(string fileName);

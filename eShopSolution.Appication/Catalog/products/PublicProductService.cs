@@ -19,28 +19,31 @@ namespace eShopSolution.Appication.Catalog.products
             this._context = context;
         }
 
-        public async Task<List<CMProductViewModel>> GetAll()
+        public async Task<List<CMProductViewModel>> GetAll(string languageId)
         {
             var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
-                        select new { p, pt};
+                        join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == languageId
+                        select new { p, pt, pic };
 
             var data = await query.Select(x => new CMProductViewModel()
-                {
-                    Id = x.p.Id,
-                    DateCreated = x.p.DateCreated,
-                    Description = x.pt.Description,
-                    Details = x.pt.Details,
-                    LanguageId = x.pt.LanguageId,
-                    Name = x.pt.Name,
-                    OriginalPrice = x.p.OriginalPrice,
-                    Price = x.p.Price,
-                    SeoAlias = x.pt.SeoAlias,
-                    SeoDescription = x.pt.SeoDescription,
-                    SeoTitle = x.pt.SeoTitle,
-                    Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount
-                }).ToListAsync();
+            {
+                Id = x.p.Id,
+                Name = x.pt.Name,
+                DateCreated = x.p.DateCreated,
+                Description = x.pt.Description,
+                Details = x.pt.Details,
+                LanguageId = x.pt.LanguageId,
+                OriginalPrice = x.p.OriginalPrice,
+                Price = x.p.Price,
+                SeoAlias = x.pt.SeoAlias,
+                SeoDescription = x.pt.SeoDescription,
+                SeoTitle = x.pt.SeoTitle,
+                Stock = x.p.Stock,
+                ViewCount = x.p.ViewCount
+            }).ToListAsync();
             return data;
         }
 
@@ -50,6 +53,7 @@ namespace eShopSolution.Appication.Catalog.products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == request.languageId
                         select new { p, pt, pic };
 
             // filter

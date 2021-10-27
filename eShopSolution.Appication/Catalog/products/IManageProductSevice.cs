@@ -21,6 +21,8 @@ namespace eShopSolution.Appication.Catalog.products
 
         Task<bool> UpdateStock(int prodcutId, int addedQuantity);
 
+        Task<CMProductViewModel> GetById(int productId, string languageId);
+
         Task AddViewCount(int productId);
 
         Task<int> Delete(int productID);
