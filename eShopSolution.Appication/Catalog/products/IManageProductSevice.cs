@@ -1,6 +1,6 @@
 ﻿using eShopSolution.ViewModels.Catalog;
 using eShopSolution.ViewModels.Catalog.forManager;
-using eShopSolution.ViewModels.Catalog.product;
+using eShopSolution.ViewModels.Catalog.ProductImage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -30,12 +30,11 @@ namespace eShopSolution.Appication.Catalog.products
         // this method to get a page of product
         Task<PageResult<CMProductViewModel>> GetAllPaging(MngProductPagingRequest request);
 
-        Task<int> AddImages(int productId, List<FormFile> files);
-
-        Task<int> RemoveImages(int imageId);
-
-        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
-
-        Task<List<CMProductImageViewModel>> getImageList(int productId);
+        // Work with image:
+        Task<int> AddImage(int productId, ProductImageCreateRequest request);
+        Task<int> RemoveImage(int imageId);
+        Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request);
+        Task<CMProductImageViewModel> GetImageById(int imageId);
+        Task<List<CMProductImageViewModel>> GetListImages(int productId);
     }
 }
