@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eShopColution.Utilities.Constants;
+﻿using eShopColution.Utilities.Constants;
 using eShopSolution.Appication.Catalog.products;
 using eShopSolution.Data.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using eShopSolution.ViewModels.Common;
+using eShopSolution.Appication.Common;
 
 namespace eShopSolution.WebApi
 {
@@ -34,7 +31,11 @@ namespace eShopSolution.WebApi
 
             // declare interface and implement class to work with db
             // o guest that the Context will be add into PublicProductService constrctor in this step
+            //Declare DI
+            services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManageProductSevice, ManageProductSevice>();
+            
 
             services.AddControllersWithViews();
 
