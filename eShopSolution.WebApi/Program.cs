@@ -16,7 +16,9 @@ namespace eShopSolution.WebApi
             CreateHostBuilder(args).Build().Run();
         }
 
+        // this is called "body expresstion" coding style
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+            // use microsoft.extention.hosting class create a default builder with args (arguments) and add configurations in start up
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
