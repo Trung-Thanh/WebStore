@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eShopSolution.Appication.System.User
+namespace eShopSolution.Appication.System.User 
 {
     public class UserService : IUserService
     {
@@ -33,7 +33,7 @@ namespace eShopSolution.Appication.System.User
             if (user == null) return null;
 
             // fourth parameter means lock the account when user login false too much
-            var result = await _signInManager.PasswordSignInAsync(user, request.Passwrod, request.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
                 return null;
