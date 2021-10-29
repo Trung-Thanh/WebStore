@@ -6,6 +6,7 @@ using eShopSolution.Appication.Catalog.products;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.forPublic;
 using eShopSolution.ViewModels.Catalog.ProductImage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace eShopSolution.WebApi.Controllers
     //api/prodcuts
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         // decalare iterface work with product public service

@@ -57,6 +57,7 @@ namespace eShopSolution.Appication.System.User
                 _config["Tokens:Issuer"],
                 claims,
                 expires: DateTime.Now.AddHours(3),
+                // contain token key
                 signingCredentials: creds);
 
             // return token string
