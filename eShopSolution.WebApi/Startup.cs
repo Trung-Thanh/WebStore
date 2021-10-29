@@ -1,15 +1,17 @@
 ﻿using eShopColution.Utilities.Constants;
 using eShopSolution.Appication.Catalog.products;
+using eShopSolution.Appication.Common;
+using eShopSolution.Appication.System.User;
 using eShopSolution.Data.EF;
+using eShopSolution.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using eShopSolution.ViewModels.Common;
-using eShopSolution.Appication.Common;
 
 namespace eShopSolution.WebApi
 {
@@ -28,14 +30,21 @@ namespace eShopSolution.WebApi
         {
             // get table form from class EShopDBContext, then use connection string to connect to the db on SqlServer
             services.AddDbContext<EShopDBContext>(options=>options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.mainConllectionString)));
+            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<EShopDBContext>().AddDefaultTokenProviders();
 
             // declare interface and implement class to work with db
             // o guest that the Context will be add into PublicProductService constrctor in this step
             //Declare DI
             services.AddTransient<IStorageService, FileStorageService>();
+
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManageProductSevice, ManageProductSevice>();
-            
+
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<IUserService, UserService>();
+
 
             services.AddControllersWithViews();
 
