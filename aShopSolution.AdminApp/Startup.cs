@@ -39,6 +39,12 @@ namespace aShopSolution.AdminApp
             services.AddControllersWithViews()
                      .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
+            // add session for 30 minute
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+
             // add service api
             services.AddTransient<IUserApiClient, UserApiClient>();
 
@@ -72,7 +78,7 @@ namespace aShopSolution.AdminApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

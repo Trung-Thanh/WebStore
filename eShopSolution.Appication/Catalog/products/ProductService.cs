@@ -14,15 +14,16 @@ using System.Net.Http.Headers;
 using System.IO;
 using eShopSolution.Appication.Common;
 using eShopSolution.ViewModels.Catalog.ProductImage;
+using eShopSolution.ViewModels.Catalog.forPublic;
 
 namespace eShopSolution.Appication.Catalog.products
 {
-    public class ManageProductSevice : IManageProductSevice
+    public class ProductService : IProductService
     {
         private readonly EShopDBContext _context;
         private readonly IStorageService _storageService;
 
-        public ManageProductSevice(EShopDBContext context, IStorageService storageService)
+        public ProductService(EShopDBContext context, IStorageService storageService)
         {
             // this constructor with be call someware.
             // to get dbcontext from argument
@@ -41,7 +42,8 @@ namespace eShopSolution.Appication.Catalog.products
 
         public async Task<int> Create(ProductCreateRequest request)
         {
-            var product = new Product() {
+            var product = new Product()
+            {
                 Price = request.Price,
                 OriginalPrice = request.OriginalPrice,
                 Stock = request.Stock,
@@ -62,7 +64,7 @@ namespace eShopSolution.Appication.Catalog.products
                 }
             };
             // save image
-            if(request.ThumbnailImage != null)
+            if (request.ThumbnailImage != null)
             {
                 product.productImages = new List<ProductImage>()
                 {
@@ -90,13 +92,13 @@ namespace eShopSolution.Appication.Catalog.products
 
             // deleta all image and data about the product
             var images = _context.productImages.Where(x => x.productId == productID);
-            foreach(var image in images)
+            foreach (var image in images)
             {
                 await _storageService.DeleteFileAsync(image.imagePath);
             }
 
             _context.Products.Remove(product);
-            
+
             return await _context.SaveChangesAsync();
         }
 
@@ -106,7 +108,7 @@ namespace eShopSolution.Appication.Catalog.products
             // 1.join 4: product, productInCategory, Category, productTranslation
             // note: request include keyword to match name of product (pt), 
             // and categoryId to filter base on categoryid
-            var query = from p in _context.Products 
+            var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
@@ -120,7 +122,7 @@ namespace eShopSolution.Appication.Catalog.products
             }
 
             // filter by al list of category id
-            if(request.listCategoryIds.Count > 0)
+            if (request.listCategoryIds.Count > 0)
             {
                 // this query so strong
                 query = query.Where(x => request.listCategoryIds.Contains(x.pic.CategoryId));
@@ -162,7 +164,7 @@ namespace eShopSolution.Appication.Catalog.products
 
             // kiem tra xem có truong ngon ngu muon sua khong - tuc la kiem tra xem có áo đó ở ngôn ngữ đó k
             var productTranslation = await _context.productTranslations.FirstOrDefaultAsync(x => x.ProductId == request.id && x.LanguageId == request.LanguageId);
-            if(product is null || productTranslation is null)
+            if (product is null || productTranslation is null)
             {
                 throw new eShopSolutionExcreption($"can not find a product with id = {request.id}");
             }
@@ -176,8 +178,8 @@ namespace eShopSolution.Appication.Catalog.products
             // save image
             if (request.ThumbnailImage != null)
             {
-                var thumbnailImage =await _context.productImages.FirstOrDefaultAsync(i => i.isDefault == true && i.productId == request.id);
-                if(thumbnailImage != null)
+                var thumbnailImage = await _context.productImages.FirstOrDefaultAsync(i => i.isDefault == true && i.productId == request.id);
+                if (thumbnailImage != null)
                 {
                     thumbnailImage.fileSize = request.ThumbnailImage.Length;
                     thumbnailImage.imagePath = await this.SaveFile(request.ThumbnailImage);
@@ -188,12 +190,12 @@ namespace eShopSolution.Appication.Catalog.products
             return await _context.SaveChangesAsync();
         }
 
-       
+
         public async Task<bool> UpdatePrice(int prodcutId, decimal newPrice)
         {
             // chua nhat thien san pham do phai co trong translation roi
             var product = await _context.Products.FindAsync(prodcutId);
-            if(product is null)
+            if (product is null)
             {
                 throw new eShopSolutionExcreption($"can not find a product with id = {prodcutId}");
             }
@@ -341,5 +343,52 @@ namespace eShopSolution.Appication.Catalog.products
                     sortOrder = i.sortOrder
                 }).ToListAsync();
         }
+
+        // public
+        public async Task<PageResult<CMProductViewModel>> GetAllByCategoryId(string languageId, PlProductPagingRequest request)
+        {
+            var query = from p in _context.Products
+                        join pt in _context.productTranslations on p.Id equals pt.ProductId
+                        join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == languageId
+                        select new { p, pt, pic };
+
+            // filter
+            if (request.CategoryId.HasValue && request.CategoryId.Value > 0)
+            {
+                query = query.Where(x => x.pic.CategoryId == request.CategoryId);
+            }
+
+            // pagging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.pageIndex - 1) * request.pageSize).Take(request.pageSize)
+                .Select(x => new CMProductViewModel()
+                {
+                    Id = x.p.Id,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
+                    Name = x.pt.Name,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount
+                }).ToListAsync();
+
+            // select and projection
+            var pageResult = new PageResult<CMProductViewModel>()
+            {
+                totalRecord = totalRow,
+                Items = data
+            };
+            return pageResult;
+        }
+
     }
 }

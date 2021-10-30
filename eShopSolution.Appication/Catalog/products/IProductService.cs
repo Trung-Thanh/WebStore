@@ -1,5 +1,6 @@
 ﻿using eShopSolution.ViewModels.Catalog;
 using eShopSolution.ViewModels.Catalog.forManager;
+using eShopSolution.ViewModels.Catalog.forPublic;
 using eShopSolution.ViewModels.Catalog.ProductImage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
@@ -10,8 +11,11 @@ using System.Threading.Tasks;
 
 namespace eShopSolution.Appication.Catalog.products
 {
-    public interface IManageProductSevice
+    public interface IProductService
     {
+        // public
+        Task<PageResult<CMProductViewModel>> GetAllByCategoryId(string languageId, PlProductPagingRequest request);
+
         // return product id 
         Task<int> Create(ProductCreateRequest request);
 

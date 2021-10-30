@@ -9,6 +9,7 @@ using aShopSolution.AdminApp.Service;
 using eShopSolution.ViewModels.System.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
@@ -26,9 +27,19 @@ namespace aShopSolution.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
+            // get token form session
+            var sessions = HttpContext.Session.GetString("Token");
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = sessions,
+                Keyword = keyword,
+                pageIndex = pageIndex,
+                pageSize = pageSize
+            };
+            var data = await _userApiClient.GetUsersPagings(request);
+            return View(data);
         }
 
         [HttpGet]
@@ -62,6 +73,10 @@ namespace aShopSolution.AdminApp.Controllers
                 // allow needless login agian or not (false is not)
                 IsPersistent = false
             };
+
+            // add token into a session for 30 minutes
+            HttpContext.Session.SetString("Token", token);
+
             await HttpContext.SignInAsync(
                         // this line bellow is common cookie of login 
                         CookieAuthenticationDefaults.AuthenticationScheme,
