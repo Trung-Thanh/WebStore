@@ -45,7 +45,8 @@ namespace eShopSolution.Appication.System.User
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.firstName),
-                new Claim(ClaimTypes.Role, string.Join(";",roles))
+                new Claim(ClaimTypes.Role, string.Join(";",roles)),
+                new Claim(ClaimTypes.Name, request.UserName)
             };
 
             // create key to create credentials
@@ -76,6 +77,7 @@ namespace eShopSolution.Appication.System.User
                 PhoneNumber = request.PhoneNumber
             };
             var result = await _userManager.CreateAsync(user, request.Password);
+            //_usermanager can throw validation error
             if (result.Succeeded)
             {
                 return true;
