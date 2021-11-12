@@ -40,6 +40,7 @@ namespace eShopSolution.WebApi.Controllers
         }
 
         [HttpPost]
+        // AllowAnonymous allow we use this method without login
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
