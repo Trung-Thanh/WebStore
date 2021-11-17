@@ -13,5 +13,6 @@ namespace aShopSolution.AdminApp.Service
 
         Task<PageResult<UserViewModel>> GetUsersPagings(GetUserPagingRequest request);
 
+        Task<bool> RegisterUser(RegisterRequest registerRequest);
     }
 }
