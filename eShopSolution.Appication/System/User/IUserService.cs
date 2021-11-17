@@ -9,9 +9,9 @@ namespace eShopSolution.Appication.System.User
 {
     public interface IUserService
     {
-        Task<string> Authenticate(LoginRequest request);
+        Task<ApiResult<string>> Authenticate(LoginRequest request);
 
-        Task<bool> Register(RegisterRequest request);
-        Task<PageResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<bool>> Register(RegisterRequest request);
+        Task<ApiResult<PageResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
     }
 }

@@ -30,16 +30,16 @@ namespace eShopSolution.Appication.System.User
             _config = config;
         } 
 
-        public async Task<string> Authenticate(LoginRequest request)
+        public async Task<ApiResult<string>> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null) return null;
+            if (user == null) return new ApiErrorResult<string>("tài khoản không tồn tại");
 
             // fourth parameter means lock the account when user login false too much
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
-                return null;
+                return new ApiErrorResult<string> ("Đăng nhập không đúng");
             }
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -65,10 +65,10 @@ namespace eShopSolution.Appication.System.User
                 signingCredentials: creds);
 
             // return token string
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
         }
 
-        public async Task<PageResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request)
+        public async Task<ApiResult<PageResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
 
@@ -99,12 +99,22 @@ namespace eShopSolution.Appication.System.User
                 totalRecord = totalRow,
                 Items = data
             };
-            return pagedResult;
+            return new ApiSuccessResult<PageResult<UserViewModel>>(pagedResult);
         }
 
-        public async Task<bool> Register(RegisterRequest request)
+        public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
-            var user = new AppUser()
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if(user != null)
+            {
+                return new ApiErrorResult<bool> ("trùng tên tài khoản đăng nhập");
+            }
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
+            {
+                return new ApiErrorResult<bool>("email đã tồn tại");
+            }
+
+            user = new AppUser()
             {
                 Dob = request.Dob,
                 Email = request.Email,
@@ -113,13 +123,18 @@ namespace eShopSolution.Appication.System.User
                 UserName = request.UserName,
                 PhoneNumber = request.PhoneNumber
             };
-            var result = await _userManager.CreateAsync(user, request.Password);
+
             //_usermanager can throw validation error
+            var result = await _userManager.CreateAsync(user, request.Password);
+
+            //check if create successfull so return success result
             if (result.Succeeded)
             {
-                return true;
+                return new ApiSuccessResult<bool>();
             }
-            return false;
+            return new ApiErrorResult<bool>("Đăng ký không thành công");
+            
+
         }
     }
 }
