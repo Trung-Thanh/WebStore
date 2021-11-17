@@ -30,9 +30,9 @@ namespace eShopSolution.WebApi.Controllers
                 return BadRequest(ModelState);
 
             var resultToken = await _userService.Authenticate(request);
-            if (string.IsNullOrEmpty(resultToken))
+            if (!resultToken.isSuccessed)
             {
-                return BadRequest("Username or password is incorrect.");
+                return BadRequest(resultToken.message);
             }
 
             // return called "response"
@@ -48,9 +48,9 @@ namespace eShopSolution.WebApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Register(request);
-            if (!result)
+            if (!result.isSuccessed)
             {
-                return BadRequest("Register is unsuccessful.");
+                return BadRequest(result.message);
             }
             return Ok();
         }
@@ -60,7 +60,7 @@ namespace eShopSolution.WebApi.Controllers
         public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
         {
             var products = await _userService.GetUsersPaging(request);
-            return Ok(products);
+            return Ok(products.resultObj);
         }
 
     }
