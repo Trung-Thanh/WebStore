@@ -41,10 +41,11 @@ namespace aShopSolution.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var token = await _userApiClient.Authenticate(request);
+            // when click login on view, create token if user exist
+            var result = await _userApiClient.Authenticate(request);
 
             // get claims and some infor
-            var userPrincipal = this.ValidateToken(token);
+            var userPrincipal = this.ValidateToken(result.resultObj);
 
             var authProperties = new AuthenticationProperties
             {
@@ -54,8 +55,9 @@ namespace aShopSolution.AdminApp.Controllers
             };
 
             // add token into a session for 30 minutes
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("Token", result.resultObj);
 
+            // add 
             await HttpContext.SignInAsync(
                         // this line bellow is common cookie of login 
                         CookieAuthenticationDefaults.AuthenticationScheme,
@@ -65,6 +67,7 @@ namespace aShopSolution.AdminApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // giai ma
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {
             IdentityModelEventSource.ShowPII = true;

@@ -9,10 +9,20 @@ namespace aShopSolution.AdminApp.Service
 {
     public interface IUserApiClient
     {
-        Task<string> Authenticate(LoginRequest request);
+        // return string oject = the token
+        Task<ApiResult<string>> Authenticate(LoginRequest request);
 
-        Task<PageResult<UserViewModel>> GetUsersPagings(GetUserPagingRequest request);
+        // return paging user oject
+        Task<ApiResult<PageResult<UserViewModel>>> GetUsersPagings(GetUserPagingRequest request);
 
-        Task<bool> RegisterUser(RegisterRequest registerRequest);
+        // return is successed
+        // or return error mess
+        Task<ApiResult<bool>> RegisterUser(RegisterRequest registerRequest);
+
+        // return is successed
+        // or return error mess
+        Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest updateRequest);
+
+        Task<ApiResult<UserViewModel>> GetUserById(Guid id);
     }
 }

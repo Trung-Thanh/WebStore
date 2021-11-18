@@ -33,16 +33,14 @@ namespace aShopSolution.AdminApp.Controllers
             var sessions = HttpContext.Session.GetString("Token");
             var request = new GetUserPagingRequest()
             {
-                BearerToken = sessions,
                 Keyword = keyword,
                 pageIndex = pageIndex,
                 pageSize = pageSize
             };
-            var data = await _userApiClient.GetUsersPagings(request);
-            return View(data);
-        }
 
-        
+            var data = await _userApiClient.GetUsersPagings(request);
+            return View(data.resultObj);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
@@ -51,27 +49,6 @@ namespace aShopSolution.AdminApp.Controllers
             // remove token on session before sign out
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
-        }
-
-        
-
-        // decode token and return a ClaimsPrincipal
-        private ClaimsPrincipal ValidateToken(string jwtToken)
-        {
-            IdentityModelEventSource.ShowPII = true;
-
-            SecurityToken validatedToken;
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-
-            validationParameters.ValidateLifetime = true;
-
-            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
-            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
-
-            return principal;
         }
 
         [HttpGet]
@@ -87,9 +64,51 @@ namespace aShopSolution.AdminApp.Controllers
                 return View();
 
             var result = await _userApiClient.RegisterUser(request);
-            if (result)
+            if (result.isSuccessed)
                 return RedirectToAction("Index");
 
+            ModelState.AddModelError("", result.message);
+            return View(request);
+        }
+
+        // update user
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var result = await _userApiClient.GetUserById(id);
+            if (result.isSuccessed)
+            {
+                var userVM = result.resultObj;
+                var updateUserRequest = new UserUpdateRequest()
+                {
+                    Dob = userVM.DoB,
+                    Email = userVM.Email,
+                    FirstName = userVM.FirstName,
+                    LastName = userVM.LastName,
+                    PhoneNumber = userVM.PhoneNumber,
+                    id = userVM.Id
+                };
+                return View(updateUserRequest);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserUpdateRequest request)
+        {
+            // show error of validation
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.UpdateUser(request.id, request);
+
+            if (result.isSuccessed)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // so only model error = only bussiness error
+            ModelState.AddModelError("", result.message);
             return View(request);
         }
     }

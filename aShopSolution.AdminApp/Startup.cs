@@ -8,6 +8,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,8 @@ namespace aShopSolution.AdminApp
                     options.AccessDeniedPath = "/User/Forbidden/";
                 });
 
+            // add fluent validator
+            // add folder contain LoginRequestValidator, that contain all validator
             services.AddControllersWithViews()
                      .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
@@ -44,6 +47,9 @@ namespace aShopSolution.AdminApp
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+
+            // add singleton IHttpContextAccessor so we can use section outside the controller, where is in service
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // add service api
             services.AddTransient<IUserApiClient, UserApiClient>();
