@@ -133,6 +133,24 @@ namespace aShopSolution.AdminApp.Service
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
 
+        // delete
+        public async Task<ApiResult<bool>> Delete(Guid id)
+        {
+            var session = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session);
+
+            var response = await client.DeleteAsync($"/api/users/{id}");
+
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
     }
 }

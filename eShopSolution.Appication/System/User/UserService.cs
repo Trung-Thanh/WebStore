@@ -184,5 +184,20 @@ namespace eShopSolution.Appication.System.User
             }
             return new ApiErrorResult<bool>("Cập nhật không thành công");
         }
+
+        // delete
+        public async Task<ApiResult<bool>> Delete(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+                return new ApiErrorResult<bool>("User không tồn tại !");
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if(result.Succeeded)
+                return new ApiSuccessResult<bool>();
+
+            return new ApiErrorResult<bool>("Xóa user thất bại");
+        }
     }
 }
