@@ -32,7 +32,7 @@ namespace eShopSolution.WebApi.Controllers
             var resultToken = await _userService.Authenticate(request);
             if (!resultToken.isSuccessed)
             {
-                return BadRequest(resultToken.message);
+                return BadRequest(resultToken);
             }
 
             // return called "response"
@@ -50,7 +50,7 @@ namespace eShopSolution.WebApi.Controllers
             var result = await _userService.Register(request);
             if (!result.isSuccessed)
             {
-                return BadRequest(result.message);
+                return BadRequest(result);
             }
             return Ok();
         }
@@ -60,7 +60,39 @@ namespace eShopSolution.WebApi.Controllers
         public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
         {
             var products = await _userService.GetUsersPaging(request);
-            return Ok(products.resultObj);
+            return Ok(products);
+        }
+
+        //update
+
+        //http://localhost/api/users/id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.GetUserById(id);
+            if (result.isSuccessed)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // https://localhost/api/user/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(id, request);
+            if (!result.isSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
     }

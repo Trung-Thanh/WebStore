@@ -125,6 +125,7 @@ namespace eShopSolution.Appication.System.User
             };
 
             //_usermanager can throw validation error
+            // add password this way
             var result = await _userManager.CreateAsync(user, request.Password);
 
             //check if create successfull so return success result
@@ -134,7 +135,51 @@ namespace eShopSolution.Appication.System.User
             }
             return new ApiErrorResult<bool>("Đăng ký không thành công");
             
+        }
 
+
+        // update
+        public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+                return new ApiErrorResult<UserViewModel>("User không tồn tại !");
+            var userViewModel = new UserViewModel()
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.firstName,
+                Id = user.Id,
+                DoB = user.Dob,
+                LastName = user.lastName
+            };
+
+            return new ApiSuccessResult<UserViewModel>(userViewModel);
+        }
+
+        public async Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id))
+            {
+                return new ApiErrorResult<bool>("email đã tồn tại");
+            }
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            user.Dob = request.Dob;
+            user.Email = request.Email;
+            user.firstName = request.FirstName;
+            user.lastName = request.LastName;
+            user.PhoneNumber = request.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            //check if create successfull so return success result
+            if (result.Succeeded)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Cập nhật không thành công");
         }
     }
 }
