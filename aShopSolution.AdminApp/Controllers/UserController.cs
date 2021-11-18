@@ -20,22 +20,22 @@ namespace aShopSolution.AdminApp.Controllers
     public class UserController : Controller
     {
         private readonly IUserApiClient _userApiClient;
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
-        public UserController(IUserApiClient userApiClient, IConfiguration configuration)
+        public UserController(IUserApiClient userApiClient)
         {
             _userApiClient = userApiClient;
-            _configuration = configuration;
+            //_configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        
+        // pageIndex is given by viewComponent
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
         {
-            // get token form session
-            var sessions = HttpContext.Session.GetString("Token");
             var request = new GetUserPagingRequest()
             {
                 Keyword = keyword,
-                pageIndex = pageIndex,
-                pageSize = pageSize
+                PageIndex = pageIndex,
+                PageSize = pageSize
             };
 
             var data = await _userApiClient.GetUsersPagings(request);
@@ -110,6 +110,14 @@ namespace aShopSolution.AdminApp.Controllers
             // so only model error = only bussiness error
             ModelState.AddModelError("", result.message);
             return View(request);
+        }
+
+        // user detail
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var result = await _userApiClient.GetUserById(id);
+            return View(result.resultObj); 
         }
     }
 }

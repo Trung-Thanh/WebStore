@@ -131,7 +131,7 @@ namespace eShopSolution.Appication.Catalog.products
             // pagging
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.pageIndex - 1) * request.pageSize).Take(request.pageSize)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                 .Select(x => new CMProductViewModel()
                 {
                     Id = x.p.Id,
@@ -152,8 +152,10 @@ namespace eShopSolution.Appication.Catalog.products
             // select and projection
             var pageResult = new PageResult<CMProductViewModel>()
             {
-                totalRecord = totalRow,
-                Items = data
+                TotalRecord = totalRow,
+                Items = data,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
             };
             return pageResult;
         }
@@ -363,7 +365,7 @@ namespace eShopSolution.Appication.Catalog.products
             // pagging
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.pageIndex - 1) * request.pageSize).Take(request.pageSize)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                 .Select(x => new CMProductViewModel()
                 {
                     Id = x.p.Id,
@@ -384,8 +386,10 @@ namespace eShopSolution.Appication.Catalog.products
             // select and projection
             var pageResult = new PageResult<CMProductViewModel>()
             {
-                totalRecord = totalRow,
-                Items = data
+                TotalRecord = totalRow,
+                Items = data,
+                PageIndex =request.PageIndex,
+                PageSize = request.PageSize
             };
             return pageResult;
         }

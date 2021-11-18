@@ -1,5 +1,6 @@
 ﻿@using eShopSolution.ViewModels.Common;
 
+
 @model PageResult<eShopSolution.ViewModels.System.User.UserViewModel>
 
 @{
@@ -71,6 +72,9 @@
                     </tbody>
                 </table>
             </div>
+            @*async*@
+            @await Component.InvokeAsync("Pager", Model)
         </div>
+
     </div>
 </div>
