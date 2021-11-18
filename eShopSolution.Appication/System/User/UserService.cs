@@ -22,7 +22,7 @@ namespace eShopSolution.Appication.System.User
         private readonly IConfiguration _config;
 
         public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            RoleManager<AppRole> roleManager, IConfiguration config)
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -81,8 +81,8 @@ namespace eShopSolution.Appication.System.User
             //3. Paging
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.pageIndex - 1) * request.pageSize)
-                .Take(request.pageSize)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .Select(x => new UserViewModel()
                 {
                     Email = x.Email,
@@ -96,7 +96,9 @@ namespace eShopSolution.Appication.System.User
             //4. Select and projection
             var pagedResult = new PageResult<UserViewModel>()
             {
-                totalRecord = totalRow,
+                TotalRecord = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
                 Items = data
             };
             return new ApiSuccessResult<PageResult<UserViewModel>>(pagedResult);
@@ -151,7 +153,8 @@ namespace eShopSolution.Appication.System.User
                 FirstName = user.firstName,
                 Id = user.Id,
                 DoB = user.Dob,
-                LastName = user.lastName
+                LastName = user.lastName,
+                UserName = user.UserName
             };
 
             return new ApiSuccessResult<UserViewModel>(userViewModel);

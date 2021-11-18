@@ -55,7 +55,7 @@ namespace aShopSolution.AdminApp.Service
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session);
 
             var response = await client.GetAsync($"/api/users/paging?pageIndex=" +
-                $"{request.pageIndex}&pageSize={request.pageSize}&keyword={request.Keyword}");
+                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
 
             var body = await response.Content.ReadAsStringAsync();
 
