@@ -119,5 +119,37 @@ namespace aShopSolution.AdminApp.Controllers
             var result = await _userApiClient.GetUserById(id);
             return View(result.resultObj); 
         }
+
+        //delete user
+        [HttpGet]
+        // id is given from detail, (edit link)
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return View(
+                new UserDeleteRequest()
+                {
+                    Id = id
+                }
+            );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(UserDeleteRequest request)
+        {
+            // show error of validation
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.Delete(request.Id);
+
+            if (result.isSuccessed)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // so only model error = only bussiness error
+            ModelState.AddModelError("", result.message);
+            return View(request);
+        }
     }
 }

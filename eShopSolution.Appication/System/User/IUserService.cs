@@ -24,5 +24,7 @@ namespace eShopSolution.Appication.System.User
         // return object paging resule of userlist
         Task<ApiResult<PageResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
         Task<ApiResult<UserViewModel>> GetUserById(Guid id);
+
+        Task<ApiResult<bool>> Delete(Guid id);
     }
 }
