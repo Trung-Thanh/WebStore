@@ -29,7 +29,7 @@ namespace aShopSolution.AdminApp.Controllers
         }
         
         // pageIndex is given by viewComponent
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             var request = new GetUserPagingRequest()
             {
@@ -39,6 +39,7 @@ namespace aShopSolution.AdminApp.Controllers
             };
 
             var data = await _userApiClient.GetUsersPagings(request);
+            ViewBag.keyword = keyword;
             return View(data.resultObj);
         }
 
@@ -48,7 +49,7 @@ namespace aShopSolution.AdminApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             // remove token on session before sign out
             HttpContext.Session.Remove("Token");
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpGet]
@@ -73,6 +74,7 @@ namespace aShopSolution.AdminApp.Controllers
 
         // update user
         [HttpGet]
+        // the id is got from URL, that is given by edit link
         public async Task<IActionResult> Edit(Guid id)
         {
             var result = await _userApiClient.GetUserById(id);
@@ -100,6 +102,7 @@ namespace aShopSolution.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
+            // this id maybe have to have same name with id on URL of API server 
             var result = await _userApiClient.UpdateUser(request.id, request);
 
             if (result.isSuccessed)

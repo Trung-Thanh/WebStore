@@ -39,11 +39,16 @@ namespace aShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Index(LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
+                return View();
 
             // when click login on view, create token if user exist
             var result = await _userApiClient.Authenticate(request);
 
+            if(result.resultObj == null)
+            {
+                ModelState.AddModelError("", result.message);
+                return View();
+            }
             // get claims and some infor
             var userPrincipal = this.ValidateToken(result.resultObj);
 

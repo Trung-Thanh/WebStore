@@ -10,7 +10,7 @@ namespace eShopSolution.ViewModels.Common
 
         public ApiErrorResult()
         {
-
+            isSuccessed = false;
         }
         public ApiErrorResult(string mess)
         {
