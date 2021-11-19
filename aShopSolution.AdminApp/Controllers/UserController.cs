@@ -1,9 +1,4 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using aShopSolution.AdminApp.Service;
 using eShopSolution.ViewModels.System.User;
@@ -11,9 +6,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace aShopSolution.AdminApp.Controllers
 {
@@ -40,6 +32,12 @@ namespace aShopSolution.AdminApp.Controllers
 
             var data = await _userApiClient.GetUsersPagings(request);
             ViewBag.keyword = keyword;
+
+            // the first time redirect
+            if (TempData["result"] != null)
+            {
+                ViewBag.successMsg = TempData["result"];
+            }
             return View(data.resultObj);
         }
 
@@ -66,7 +64,10 @@ namespace aShopSolution.AdminApp.Controllers
 
             var result = await _userApiClient.RegisterUser(request);
             if (result.isSuccessed)
+            {
+                TempData["result"] = "Thêm mới người dùng thành công";
                 return RedirectToAction("Index");
+            }
 
             ModelState.AddModelError("", result.message);
             return View(request);
@@ -107,6 +108,7 @@ namespace aShopSolution.AdminApp.Controllers
 
             if (result.isSuccessed)
             {
+                TempData["result"] = "Cập nhật thành công";
                 return RedirectToAction("Index");
             }
 
@@ -147,6 +149,7 @@ namespace aShopSolution.AdminApp.Controllers
 
             if (result.isSuccessed)
             {
+                TempData["result"] = "Xóa người dùng thành công";
                 return RedirectToAction("Index");
             }
 
