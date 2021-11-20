@@ -146,6 +146,8 @@ namespace eShopSolution.Appication.System.User
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
                 return new ApiErrorResult<UserViewModel>("User không tồn tại !");
+
+            var roles = await _userManager.GetRolesAsync(user);
             var userViewModel = new UserViewModel()
             {
                 Email = user.Email,
@@ -154,7 +156,8 @@ namespace eShopSolution.Appication.System.User
                 Id = user.Id,
                 DoB = user.Dob,
                 LastName = user.lastName,
-                UserName = user.UserName
+                UserName = user.UserName,
+                Roles = roles
             };
 
             return new ApiSuccessResult<UserViewModel>(userViewModel);
@@ -198,6 +201,36 @@ namespace eShopSolution.Appication.System.User
                 return new ApiSuccessResult<bool>();
 
             return new ApiErrorResult<bool>("Xóa user thất bại");
+        }
+
+        //role assign
+        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("Tài khoản không tồn tại");
+            }
+
+            var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
+            var addedRoles = request.Roles.Where(x => x.Selected == true).Select(x => x.Name).ToList();
+
+            foreach (var role in removedRoles)
+            {
+                if (await _userManager.IsInRoleAsync(user, role) == true)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, role);
+                }
+            }
+
+            foreach (var role in addedRoles)
+            {
+                if(await _userManager.IsInRoleAsync(user, role) == false)
+                {
+                    await _userManager.AddToRoleAsync(user, role);
+                }
+            }
+            return new ApiSuccessResult<bool>();
         }
     }
 }

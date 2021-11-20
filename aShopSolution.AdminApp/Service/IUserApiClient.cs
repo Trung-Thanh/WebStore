@@ -26,5 +26,7 @@ namespace aShopSolution.AdminApp.Service
         Task<ApiResult<UserViewModel>> GetUserById(Guid id);
 
         Task<ApiResult<bool>> Delete(Guid id);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }
