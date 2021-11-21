@@ -1,6 +1,7 @@
 ﻿using eShopColution.Utilities.Constants;
 using eShopSolution.Appication.Catalog.products;
 using eShopSolution.Appication.Common;
+using eShopSolution.Appication.System.Language;
 using eShopSolution.Appication.System.User;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
@@ -50,6 +51,7 @@ namespace eShopSolution.WebApi
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ILanguageService, LanguageService>();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());

@@ -37,12 +37,14 @@ namespace aShopSolution.AdminApp.Service
             // post request to uri of WebApi
             var response = await client.PostAsync("/api/users/authenticate", httpContent);
 
+            var body = await response.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
-                return  JsonConvert.DeserializeObject<ApiSuccessResult<string>>(await response.Content.ReadAsStringAsync());
+                return  JsonConvert.DeserializeObject<ApiSuccessResult<string>>(body);
             }
             //get tocken form api
-            return  JsonConvert.DeserializeObject<ApiErrorResult<string>>(await response.Content.ReadAsStringAsync());
+            return  JsonConvert.DeserializeObject<ApiErrorResult<string>>(body);
         }
 
         public async Task<ApiResult<PageResult<UserViewModel>>> GetUsersPagings(GetUserPagingRequest request)

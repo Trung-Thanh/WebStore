@@ -54,6 +54,8 @@ namespace aShopSolution.AdminApp
             // add service api
             services.AddTransient<IUserApiClient, UserApiClient>();
             services.AddTransient<IRoleApiClient, RoleApiClient>();
+            services.AddTransient<ILanguageApiClient, LanguageApiClient>();
+
 
             // does not bien dich again
             IMvcBuilder builder = services.AddRazorPages();
