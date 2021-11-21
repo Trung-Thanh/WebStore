@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using aShopSolution.AdminApp.Service;
+using eShopColution.Utilities.Constants;
 using eShopSolution.ViewModels.System.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -59,8 +60,10 @@ namespace aShopSolution.AdminApp.Controllers
                 IsPersistent = true
             };
 
+            // add default language id into a session for 30 minutes
+            HttpContext.Session.SetString(SystemConstants.AppSettings.DefaultLanguageId, _configuration[SystemConstants.AppSettings.DefaultLanguageId]);
             // add token into a session for 30 minutes
-            HttpContext.Session.SetString("Token", result.resultObj);
+            HttpContext.Session.SetString(SystemConstants.AppSettings.Token, result.resultObj);
 
             // add 
             await HttpContext.SignInAsync(
