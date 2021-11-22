@@ -55,6 +55,7 @@ namespace aShopSolution.AdminApp
             services.AddTransient<IUserApiClient, UserApiClient>();
             services.AddTransient<IRoleApiClient, RoleApiClient>();
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
+            services.AddTransient<IProductApiClient, ProductApiClient>();
 
 
             // does not bien dich again

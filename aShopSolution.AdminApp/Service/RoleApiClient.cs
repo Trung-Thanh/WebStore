@@ -22,7 +22,7 @@ namespace aShopSolution.AdminApp.Service
         public async Task<ApiResult<List<RoleViewModel>>> GetAll()
         {
             // if something bad happen, the isSuccess is false, this web maybe dead
-            return await GetAsync<List<RoleViewModel>>("/api/roles", false, false);
+            return await GetAsync_UseApiResult<List<RoleViewModel>>("/api/roles", true);
         }
     }
 }
