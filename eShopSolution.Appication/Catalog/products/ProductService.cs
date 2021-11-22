@@ -112,6 +112,7 @@ namespace eShopSolution.Appication.Catalog.products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == request.LanguageId
                         select new { p, pt, pic };
 
             // filter
@@ -122,11 +123,11 @@ namespace eShopSolution.Appication.Catalog.products
             }
 
             // filter by al list of category id
-            if (request.listCategoryIds.Count > 0)
-            {
-                // this query so strong
-                query = query.Where(x => request.listCategoryIds.Contains(x.pic.CategoryId));
-            }
+            //if (request.listCategoryIds.Count > 0)
+            //{
+            //    // this query so strong
+            //    query = query.Where(x => request.listCategoryIds.Contains(x.pic.CategoryId));
+            //}
 
             // pagging
             int totalRow = await query.CountAsync();

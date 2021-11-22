@@ -8,6 +8,8 @@ namespace eShopSolution.ViewModels.Catalog.forManager
     public class MngProductPagingRequest : PagingRequestBase
     {
         public string keyWord { get; set; }
-        public List<int> listCategoryIds { get; set; }
+        //public List<int> listCategoryIds { get; set; }
+
+        public string LanguageId { get; set; }
     }
 }

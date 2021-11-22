@@ -21,7 +21,7 @@ namespace aShopSolution.AdminApp.Service
         public async Task<ApiResult<List<LanguageViewModel>>> GetAll()
         {
             // if something bad happen, the isSuccess is false, this web maybe dead
-            return await GetAsync<List<LanguageViewModel>>("/api/languages", false, false);
+            return await GetAsync_UseApiResult<List<LanguageViewModel>>("/api/languages", true);
         }
     }
 }

@@ -24,15 +24,17 @@ namespace aShopSolution.AdminApp.Service
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected async Task<ApiResult<TResponse>> GetAsync<TResponse>(string url, bool message, bool addToken)
+        protected async Task<ApiResult<TResponse>> GetAsync_UseApiResult<TResponse>(string url, bool addToken)
         {
-            var session = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
-
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
 
-            // add token to header of http client
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session);
+            if (addToken)
+            {
+                // add token to header of http client
+                var session = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session);
+            }
 
             var response = await client.GetAsync(url);
 
@@ -47,6 +49,27 @@ namespace aShopSolution.AdminApp.Service
             }
 
             return (ApiErrorResult<TResponse>)JsonConvert.DeserializeObject(body, typeof(ApiErrorResult<TResponse>));
+        }
+
+        protected async Task<TResponse> GetAsync<TResponse>(string url, bool addToken)
+        {           
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+
+            if (addToken)
+            {
+                // add token to header of http client
+                var session = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session);
+            }
+            
+            var response = await client.GetAsync(url);
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            TResponse resultObj = (TResponse)JsonConvert.DeserializeObject(body, typeof(TResponse));
+
+            return resultObj;
         }
     }
 }
