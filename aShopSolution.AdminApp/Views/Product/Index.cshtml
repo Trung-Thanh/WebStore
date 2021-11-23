@@ -29,8 +29,13 @@
                     @*the parameters on query*@
                     <form asp-action="Index" method="get">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-4">
                                 <input type="text" value="@ViewBag.keyword" class="form-control" name="keyword" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="@ViewBag.Categories" class="form-control">
+                                    <option>---chọn danh mục---</option>
+                                </select>
                             </div>
                             <div class="col-md-3">
                                 <button type="submit" class="btn btn-primary">Tìm</button>

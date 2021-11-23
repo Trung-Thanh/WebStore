@@ -9,7 +9,7 @@ namespace eShopSolution.ViewModels.Catalog.forManager
     {
         public string keyWord { get; set; }
         //public List<int> listCategoryIds { get; set; }
-
+        public int? CategoryId { get; set; }
         public string LanguageId { get; set; }
     }
 }

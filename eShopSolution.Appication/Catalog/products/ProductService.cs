@@ -110,10 +110,10 @@ namespace eShopSolution.Appication.Catalog.products
             // and categoryId to filter base on categoryid
             var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
-                        //join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
-                        //join c in _context.Categories on pic.CategoryId equals c.Id
+                        join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.Id
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt/*, pic*/ };
+                        select new { p, pt, pic };
 
             // filter
             // filter by keywork form admin
@@ -123,11 +123,11 @@ namespace eShopSolution.Appication.Catalog.products
             }
 
             // filter by al list of category id
-            //if (request.listCategoryIds.Count > 0)
-            //{
-            //    // this query so strong
-            //    query = query.Where(x => request.listCategoryIds.Contains(x.pic.CategoryId));
-            //}
+            if (request.CategoryId != null && request.CategoryId != 0)
+            {
+                // this query so strong
+                query = query.Where(x => x.pic.CategoryId ==  request.CategoryId);
+            }
 
             // pagging
             int totalRow = await query.CountAsync();
@@ -148,6 +148,7 @@ namespace eShopSolution.Appication.Catalog.products
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount
+
                 }).ToListAsync();
 
             // select and projection
