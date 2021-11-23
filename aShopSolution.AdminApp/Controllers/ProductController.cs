@@ -45,7 +45,29 @@ namespace aShopSolution.AdminApp.Controllers
         }
 
         // create product
-        
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create(ProductCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userProductApiClient.Create(request);
+            if (result)
+            {
+                TempData["result"] = "Thêm mới sản phẩm thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Thêm sản phẩm không thành công");
+            return View(request);
+        }
     }
 }
