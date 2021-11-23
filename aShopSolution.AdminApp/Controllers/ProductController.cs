@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using aShopSolution.AdminApp.Service;
 using eShopColution.Utilities.Constants;
 using eShopSolution.ViewModels.Catalog.forManager;
+using eShopSolution.ViewModels.Catalog.product.forManager;
+using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -79,6 +81,58 @@ namespace aShopSolution.AdminApp.Controllers
 
             ModelState.AddModelError("", "Thêm sản phẩm không thành công");
             return View(request);
+        }
+
+        // assign categories for product
+        [HttpGet]
+        public async Task<IActionResult> CategoryAssign(int id)
+        {
+            var categoryAssignRequest = await GetCategoryAssignRequest(id);
+            return View(categoryAssignRequest);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CategoryAssign(CategoryAssignRequest request)
+        {
+            // show error of validation
+            if (!ModelState.IsValid)
+                return View();
+
+            // this id maybe have to have same name with id on URL of API server 
+            var result = await _userProductApiClient.CategoryAssign(request.Id, request);
+
+            if (result.isSuccessed)
+            {
+                TempData["result"] = "Gán danh mục thành công";
+                return RedirectToAction("Index");
+            }
+
+            // so only model error = only bussiness error
+            ModelState.AddModelError("", result.message);
+            var roleAssignRequest = await GetCategoryAssignRequest(request.Id);
+            return View(roleAssignRequest);
+        }
+
+        private async Task<CategoryAssignRequest> GetCategoryAssignRequest(int id)
+        {
+            var currentLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+
+            var getProductResult = await _userProductApiClient.GetById(id, currentLanguageId);
+            var getCategoryResult = await _categoryApiClient.GetAll(currentLanguageId);
+            var categoryAssignRequest = new CategoryAssignRequest();
+
+            foreach (var category in getCategoryResult)
+            {
+                categoryAssignRequest.Categories.Add(new SelectedItem()
+                {
+                    Id = category.Id.ToString(),
+                    Name = category.Name,
+                    Selected = getProductResult.Categories.Contains(category.Name)
+                });
+            }
+
+            return categoryAssignRequest;
         }
     }
 }

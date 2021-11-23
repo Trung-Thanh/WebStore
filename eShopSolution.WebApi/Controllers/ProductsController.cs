@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using eShopSolution.Appication.Catalog.products;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.forPublic;
+using eShopSolution.ViewModels.Catalog.product.forManager;
 using eShopSolution.ViewModels.Catalog.ProductImage;
+using eShopSolution.ViewModels.System.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -154,6 +156,21 @@ namespace eShopSolution.WebApi.Controllers
             if (image == null)
                 return BadRequest("Cannot find product");
             return Ok(image);
+        }
+
+        // role assign
+        [HttpPut("{id}/categories")]
+        public async Task<IActionResult> CategoryAssign(int id, [FromBody] CategoryAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _ProductService.CategoryAssign(id, request);
+            if (!result.isSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }
