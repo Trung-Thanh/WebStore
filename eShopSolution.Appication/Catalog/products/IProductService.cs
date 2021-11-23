@@ -1,6 +1,7 @@
 ﻿using eShopSolution.ViewModels.Catalog;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.forPublic;
+using eShopSolution.ViewModels.Catalog.product.forManager;
 using eShopSolution.ViewModels.Catalog.ProductImage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
@@ -40,5 +41,7 @@ namespace eShopSolution.Appication.Catalog.products
         Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request);
         Task<CMProductImageViewModel> GetImageById(int imageId);
         Task<List<CMProductImageViewModel>> GetListImages(int productId);
+
+        Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request);
     }
 }

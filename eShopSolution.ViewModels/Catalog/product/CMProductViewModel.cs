@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eShopSolution.ViewModels.Catalog.Category;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,5 +21,7 @@ namespace eShopSolution.ViewModels.Catalog
         public string SeoTitle { set; get; }
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
+
+        public List<string> Categories { get; set; } = new List<string>();
     }
 }
