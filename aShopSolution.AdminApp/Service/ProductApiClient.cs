@@ -30,7 +30,7 @@ namespace aShopSolution.AdminApp.Service
         public async Task<PageResult<CMProductViewModel>> GetPagings(MngProductPagingRequest request)
         {
             return await GetAsync<PageResult<CMProductViewModel>>($"/api/products/paging?pageIndex=" +
-                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.keyWord}&LanguageId={request.LanguageId}", true);
+                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.keyWord}&LanguageId={request.LanguageId}&categoryId={request.CategoryId}", true);
         }
 
         // create product
