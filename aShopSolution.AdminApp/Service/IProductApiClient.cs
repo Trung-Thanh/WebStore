@@ -11,5 +11,7 @@ namespace aShopSolution.AdminApp.Service
     public  interface IProductApiClient
     {
         Task<PageResult<CMProductViewModel>> GetPagings(MngProductPagingRequest request);
+
+        Task<bool> Create(ProductCreateRequest request);
     }
 }

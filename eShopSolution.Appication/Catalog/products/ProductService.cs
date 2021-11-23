@@ -110,10 +110,10 @@ namespace eShopSolution.Appication.Catalog.products
             // and categoryId to filter base on categoryid
             var query = from p in _context.Products
                         join pt in _context.productTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        //join pic in _context.ProductsInCategories on p.Id equals pic.ProductId
+                        //join c in _context.Categories on pic.CategoryId equals c.Id
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt, pic };
+                        select new { p, pt/*, pic*/ };
 
             // filter
             // filter by keywork form admin
