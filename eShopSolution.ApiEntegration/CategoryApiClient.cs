@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace aShopSolution.AdminApp.Service
+namespace eShopSolution.ApiEntegration
 {
     public class CategoryApiClient : BaseApiClient, ICategoryApiClient
     {

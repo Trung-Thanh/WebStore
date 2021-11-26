@@ -34,6 +34,10 @@ namespace eShopSolution.ViewModels.Catalog.forManager
 
         public string LanguageId { set; get; }
 
+        [Display(Name = "Có phải sản phẩm nổi bật ?")]
+        public bool? IsFeature { get; set; }
+
+
         [Display(Name = "Ảnh minh họa")]
         public  IFormFile ThumbnailImage { get; set; }
 

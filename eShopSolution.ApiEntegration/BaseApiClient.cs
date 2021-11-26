@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace aShopSolution.AdminApp.Service
+namespace eShopSolution.ApiEntegration
 {
     public class BaseApiClient
     {
@@ -52,7 +52,7 @@ namespace aShopSolution.AdminApp.Service
         }
 
         protected async Task<TResponse> GetAsync<TResponse>(string url, bool addToken)
-        {           
+        {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
 
@@ -62,7 +62,7 @@ namespace aShopSolution.AdminApp.Service
                 var session = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session);
             }
-            
+
             var response = await client.GetAsync(url);
 
             var body = await response.Content.ReadAsStringAsync();

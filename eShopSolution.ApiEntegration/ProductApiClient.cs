@@ -1,4 +1,5 @@
 ﻿using eShopColution.Utilities.Constants;
+using eShopSolution.ApiEntegration;
 using eShopSolution.ViewModels.Catalog;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.product.forManager;
@@ -15,7 +16,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace aShopSolution.AdminApp.Service
+namespace eShopSolution.ApiEntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {

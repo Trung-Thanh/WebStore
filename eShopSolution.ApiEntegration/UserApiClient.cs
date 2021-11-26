@@ -1,4 +1,5 @@
-﻿using eShopSolution.ViewModels.Common;
+﻿using eShopSolution.ApiEntegration;
+using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace aShopSolution.AdminApp.Service
+namespace eShopSolution.ApiEntegration
 {
     public class UserApiClient : IUserApiClient
     {
