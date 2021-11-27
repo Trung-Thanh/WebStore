@@ -110,5 +110,11 @@ namespace eShopSolution.ApiEntegration
             var data = await GetAsync<List<CMProductViewModel>>($"api/products/featured/{languageId}/{take}", true);
             return data;
         }
+        public async Task<List<CMProductViewModel>> GetLatestProducts(string languageId, int take)
+        {
+            var data = await GetAsync<List<CMProductViewModel>>($"api/products/latest/{languageId}/{take}", true);
+            return data;
+        }
+
     }
 }

@@ -487,5 +487,50 @@ namespace eShopSolution.Appication.Catalog.products
 
             return data;
         }
+
+        public async Task<List<CMProductViewModel>> GetLatestProducts(string languageId, int take)
+        {
+            var query = from p in _context.Products
+                        join pt in _context.productTranslations on p.Id equals pt.ProductId
+
+                        join pi in _context.productImages on p.Id equals pi.productId into ppi
+                        from pi in ppi.DefaultIfEmpty()
+
+                        join pic in _context.ProductsInCategories on p.Id equals pic.ProductId into ppic
+                        from pic in ppic.DefaultIfEmpty()
+
+                        join c in _context.Categories on pic.CategoryId equals c.Id into picc
+                        from c in picc.DefaultIfEmpty()
+
+                        where pt.LanguageId == languageId && (pi == null || pi.isDefault == true)
+                        select new { p, pt, pic, pi };
+
+            // pagging
+            int totalRow = await query.CountAsync();
+
+            if (take > totalRow)
+                take = totalRow;
+
+            var data = await query.OrderByDescending(x => x.p.DateCreated).Take(take)
+                .Select(x => new CMProductViewModel()
+                {
+                    Id = x.p.Id,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
+                    Name = x.pt.Name,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount,
+                    ThumbnailImage = x.pi.imagePath
+                }).ToListAsync();
+
+            return data;
+        }
     }
 }

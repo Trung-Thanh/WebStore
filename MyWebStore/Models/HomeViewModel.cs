@@ -12,5 +12,7 @@ namespace MyWebStore.Models
         public List<SlideViewModel> Slides { get; set; }
 
         public List<CMProductViewModel> FeaturedProducts { get; set; }
+
+        public List<CMProductViewModel> LatestProducts { get; set; }
     }
 }

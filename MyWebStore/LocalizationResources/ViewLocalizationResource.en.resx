@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add to" xml:space="preserve">
+    <value>Add to</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="categoryUrl" xml:space="preserve">
+    <value>category</value>
+    <comment>_layout</comment>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
     <comment>Layout</comment>
@@ -129,13 +137,25 @@
     <value>English</value>
     <comment>Layout</comment>
   </data>
+  <data name="featured product" xml:space="preserve">
+    <value>featured product</value>
+    <comment>Home/Index</comment>
+  </data>
   <data name="Featured Products" xml:space="preserve">
     <value>Featured Products</value>
+    <comment>Home/Index</comment>
+  </data>
+  <data name="Latest Products" xml:space="preserve">
+    <value>Latest Products</value>
     <comment>Home/Index</comment>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
     <comment>Layout</comment>
+  </data>
+  <data name="productUrl" xml:space="preserve">
+    <value>product</value>
+    <comment>Home/Index</comment>
   </data>
   <data name="Specials Offer" xml:space="preserve">
     <value>Specials Offer</value>

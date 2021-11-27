@@ -36,10 +36,12 @@ namespace MyWebStore.Controllers
             var slides = await _slideApiClient.GetAll();
             var culture = CultureInfo.CurrentCulture.Name;
             var featureProducts = await _productApiClient.GetFeaturedProducts(culture, ProductSettings.numberOfFeaturedProducts);
+            var latestProduct = await _productApiClient.GetLatestProducts(culture, ProductSettings.numberOfLatestProducts);
             var viewModel = new HomeViewModel()
             {
                 Slides = slides,
-                FeaturedProducts = featureProducts
+                FeaturedProducts = featureProducts,
+                LatestProducts = latestProduct
             };
             
             return View(viewModel);

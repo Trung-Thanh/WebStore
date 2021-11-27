@@ -19,6 +19,7 @@ namespace eShopColution.Utilities.Constants
         public class ProductSettings
         {
             public const int numberOfFeaturedProducts = 12;
+            public const int numberOfLatestProducts = 6;
         }
     }
 }
