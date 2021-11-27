@@ -172,5 +172,18 @@ namespace eShopSolution.WebApi.Controllers
             }
             return Ok(result);
         }
+
+        // get feature product
+        [HttpGet("featured/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeaturedProducts(string languageId, int take)
+        {
+            var featuredProducts = await _ProductService.GetFeatureProducts(languageId, take);
+            if (featuredProducts == null)
+            {
+                return BadRequest("Cannot find featured products");
+            }
+            return Ok(featuredProducts);
+        }
     }
 }

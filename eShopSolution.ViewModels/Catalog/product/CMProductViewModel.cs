@@ -24,5 +24,7 @@ namespace eShopSolution.ViewModels.Catalog
 
         public bool? IsFeature { get; set; }
         public List<string> Categories { get; set; } = new List<string>();
+
+        public string ThumbnailImage { get; set; }
     }
 }

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eShopSolution.ApiEntegration\eShopSolution.ApiEntegration.csproj" />
+    <ProjectReference Include="..\eShopSolution.WebApi\eShopSolution.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ using eShopSolution.Appication.Common;
 using eShopSolution.Appication.System.Categories;
 using eShopSolution.Appication.System.Language;
 using eShopSolution.Appication.System.User;
+using eShopSolution.Appication.Utility.Silde;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.ViewModels.System.Roles;
@@ -53,6 +54,7 @@ namespace eShopSolution.WebApi
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<ISlideService, SlideService>();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
