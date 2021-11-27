@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using aShopSolution.AdminApp.Service;
 using eShopColution.Utilities.Constants;
+using eShopSolution.ApiEntegration;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.product.forManager;
 using eShopSolution.ViewModels.Common;

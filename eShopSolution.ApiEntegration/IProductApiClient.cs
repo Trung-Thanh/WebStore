@@ -7,14 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace aShopSolution.AdminApp.Service
+namespace eShopSolution.ApiEntegration
 {
-    public  interface IProductApiClient
+    public interface IProductApiClient
     {
         Task<PageResult<CMProductViewModel>> GetPagings(MngProductPagingRequest request);
         Task<bool> Create(ProductCreateRequest request);
 
         Task<CMProductViewModel> GetById(int id, string languageId);
         Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request);
+
+        Task<List<CMProductViewModel>> GetFeaturedProducts(string languageId, int take);
+
+        Task<List<CMProductViewModel>> GetLatestProducts(string languageId, int take);
     }
 }

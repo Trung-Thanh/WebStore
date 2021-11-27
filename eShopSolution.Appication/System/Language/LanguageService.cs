@@ -13,7 +13,7 @@ namespace eShopSolution.Appication.System.Language
 {
     public class LanguageService : ILanguageService
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
         private readonly EShopDBContext _dbContext;
 
         public LanguageService(EShopDBContext dbContext)

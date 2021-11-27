@@ -1,4 +1,5 @@
 ﻿using eShopColution.Utilities.Constants;
+using eShopSolution.ApiEntegration;
 using eShopSolution.ViewModels.Catalog;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.product.forManager;
@@ -15,7 +16,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace aShopSolution.AdminApp.Service
+namespace eShopSolution.ApiEntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {
@@ -103,5 +104,17 @@ namespace aShopSolution.AdminApp.Service
             var data = await GetAsync<CMProductViewModel>($"/api/products/{id}/{languageId}", true);
             return data;
         }
+
+        public async Task<List<CMProductViewModel>> GetFeaturedProducts(string languageId, int take)
+        {
+            var data = await GetAsync<List<CMProductViewModel>>($"api/products/featured/{languageId}/{take}", true);
+            return data;
+        }
+        public async Task<List<CMProductViewModel>> GetLatestProducts(string languageId, int take)
+        {
+            var data = await GetAsync<List<CMProductViewModel>>($"api/products/latest/{languageId}/{take}", true);
+            return data;
+        }
+
     }
 }

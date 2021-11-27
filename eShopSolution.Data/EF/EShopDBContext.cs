@@ -38,6 +38,7 @@ namespace eShopSolution.Data.EF
 
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new SlideConfiguration());
 
             // 5 cái reneric của lớp mà lơp này kế thừa kế thừa
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
@@ -63,5 +64,7 @@ namespace eShopSolution.Data.EF
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<ProductsInCategories> ProductsInCategories { get; set; }
         public DbSet<ProductImage> productImages { get; set; }
+
+        public DbSet<Slide> Slides { get; set; }
     }
 }
