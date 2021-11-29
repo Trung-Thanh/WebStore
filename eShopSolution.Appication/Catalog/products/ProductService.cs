@@ -1,4 +1,5 @@
 ﻿using eShopColution.Utilities.Exceptions;
+using eShopColution.Utilities.Constants;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using System;
@@ -16,6 +17,7 @@ using eShopSolution.Appication.Common;
 using eShopSolution.ViewModels.Catalog.ProductImage;
 using eShopSolution.ViewModels.Catalog.forPublic;
 using eShopSolution.ViewModels.Catalog.product.forManager;
+using static eShopColution.Utilities.Constants.SystemConstants;
 
 namespace eShopSolution.Appication.Catalog.products
 {
@@ -43,6 +45,43 @@ namespace eShopSolution.Appication.Catalog.products
 
         public async Task<int> Create(ProductCreateRequest request)
         {
+            var allLanguages = _context.Languages;
+            var translationsForAllLanguage = new List<ProductTranslation>();
+            
+            foreach(var language in allLanguages)
+            {
+                if(language.Id == request.LanguageId)
+                {
+                    translationsForAllLanguage.Add(
+                        new ProductTranslation()
+                        {
+                            Name = request.Name,
+                            Description = request.Description,
+                            Details = request.Details,
+                            SeoDescription = request.SeoDescription,
+                            SeoTitle = request.SeoTitle,
+                            SeoAlias = request.SeoAlias,
+                            LanguageId = request.LanguageId
+                        }
+                    );
+                }
+                else
+                {
+                    translationsForAllLanguage.Add(
+                        new ProductTranslation()
+                        {
+                            Name = BussinessConstant.NA,
+                            Description = BussinessConstant.NA,
+                            Details = BussinessConstant.NA,
+                            SeoDescription = BussinessConstant.NA,
+                            SeoTitle = BussinessConstant.NA,
+                            SeoAlias = BussinessConstant.NA,
+                            LanguageId = language.Id
+                        }
+                    );
+                }
+            }
+
             var product = new Product()
             {
                 Price = request.Price,
@@ -50,19 +89,7 @@ namespace eShopSolution.Appication.Catalog.products
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-                productTranslations = new List<ProductTranslation>()
-                {
-                    new ProductTranslation()
-                    {
-                        Name = request.Name,
-                        Description = request.Description,
-                        Details = request.Details,
-                        SeoDescription = request.SeoDescription,
-                        SeoTitle = request.SeoTitle,
-                        SeoAlias = request.SeoAlias,
-                        LanguageId = request.LanguageId
-                    }
-                }
+                productTranslations = translationsForAllLanguage
             };
             // save image
             if (request.ThumbnailImage != null)
@@ -111,7 +138,9 @@ namespace eShopSolution.Appication.Catalog.products
             // note: request include keyword to match name of product (pt), 
             // and categoryId to filter base on categoryid
             var query = from p in _context.Products
-                        join pt in _context.productTranslations on p.Id equals pt.ProductId
+                        join pt in _context.productTranslations on p.Id equals pt.ProductId 
+                        //into ppt
+                        //from pt in ppt.DefaultIfEmpty()
 
                         join pic in _context.ProductsInCategories on p.Id equals pic.ProductId into ppic
                         from pic in ppic.DefaultIfEmpty()
@@ -174,7 +203,9 @@ namespace eShopSolution.Appication.Catalog.products
             var product = await _context.Products.FindAsync(request.id);
 
             // kiem tra xem có truong ngon ngu muon sua khong - tuc la kiem tra xem có áo đó ở ngôn ngữ đó k
-            var productTranslation = await _context.productTranslations.FirstOrDefaultAsync(x => x.ProductId == request.id && x.LanguageId == request.LanguageId);
+            var productTranslation = await _context.productTranslations.
+                FirstOrDefaultAsync(x => x.ProductId == request.id && x.LanguageId == request.LanguageId);
+
             if (product is null || productTranslation is null)
             {
                 throw new eShopSolutionExcreption($"can not find a product with id = {request.id}");

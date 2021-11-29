@@ -21,5 +21,10 @@ namespace eShopColution.Utilities.Constants
             public const int numberOfFeaturedProducts = 12;
             public const int numberOfLatestProducts = 6;
         }
+
+        public class BussinessConstant
+        {
+            public const string NA = "N/A";
+        }
     }
 }

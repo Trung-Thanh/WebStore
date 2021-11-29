@@ -7,6 +7,7 @@ namespace eShopSolution.ViewModels.System.User
 {
     public class UserUpdateRequest
     {
+        // id of uer that was choosen to send update request POST
         public Guid id { get; set; }
 
         [Display(Name = "Tên")]
