@@ -134,5 +134,45 @@ namespace aShopSolution.AdminApp.Controllers
 
             return categoryAssignRequest;
         }
+
+        // update
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var currentLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var product =  await _userProductApiClient.GetById(id, currentLanguageId);
+
+            var updateProductRequest = new ProductUpdateRequest() {
+                Description = product.Description,
+                Details = product.Details,
+                Name = product.Name,
+                SeoAlias = product.SeoAlias,
+                SeoDescription = product.SeoDescription,
+                SeoTitle = product.SeoTitle,
+                IsFeature = product.IsFeature,
+                id = product.Id,
+                LanguageId = product.LanguageId
+            };
+
+            return View(updateProductRequest);
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userProductApiClient.Update(request);
+            if (result)
+            {
+                TempData["result"] = "cập nhật sản phẩm thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "cập nhật phẩm không thành công");
+            return View(request);
+        }
     }
 }
