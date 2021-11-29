@@ -145,11 +145,14 @@ namespace eShopSolution.Appication.Catalog.products
                         join pic in _context.ProductsInCategories on p.Id equals pic.ProductId into ppic
                         from pic in ppic.DefaultIfEmpty()
 
+                        join pi in _context.productImages on p.Id equals pi.productId into ppi
+                        from pi in ppi.DefaultIfEmpty()
+
                         join c in _context.Categories on pic.CategoryId equals c.Id into picc
                         from c in picc.DefaultIfEmpty()
 
-                        where pt.LanguageId == request.LanguageId
-                        select new { p, pt, pic };
+                        where pt.LanguageId == request.LanguageId && pi.isDefault == true
+                        select new { p, pt, pic, pi };
 
             // filter
             // filter by keywork form admin
@@ -183,7 +186,9 @@ namespace eShopSolution.Appication.Catalog.products
                     SeoDescription = x.pt.SeoDescription,
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount
+                    ViewCount = x.p.ViewCount,
+
+                    ThumbnailImage = x.pi.imagePath
 
                 }).ToListAsync();
 
@@ -228,8 +233,8 @@ namespace eShopSolution.Appication.Catalog.products
                     _context.productImages.Update(thumbnailImage);
                 }
             }
-
-            return await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return result;
         }
 
 

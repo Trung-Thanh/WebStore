@@ -34,7 +34,8 @@
             <div class="col-md-10">
                 <form asp-action="Edit" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="LanguageId"/>
+                    <input type="hidden" asp-for="LanguageId" />
+                    <input type="hidden" asp-for="id" />
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
                         <input asp-for="Name" class="form-control" />
@@ -71,10 +72,10 @@
                         <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                     </div>
                     @*<div class="form-group">
-                        <label asp-for="IsFeature" class="control-label"></label>
-                        <input asp-for="IsFeature" type="checkbox" class="form-control" />
-                        <span asp-validation-for="IsFeature" class="text-danger"></span>
-                    </div>*@
+            <label asp-for="IsFeature" class="control-label"></label>
+            <input asp-for="IsFeature" type="checkbox" class="form-control" />
+            <span asp-validation-for="IsFeature" class="text-danger"></span>
+        </div>*@
                     <div class="form-group">
                         <input type="submit" value="Cập nhật" class="btn btn-primary" />
                     </div>

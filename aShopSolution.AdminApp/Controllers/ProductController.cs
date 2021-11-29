@@ -30,6 +30,7 @@ namespace aShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Index(int? categoryId, string keyword, int pageIndex = 1, int pageSize = 10)
         {
             var currentLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
             var request = new MngProductPagingRequest()
             {
                 keyWord = keyword,
@@ -39,16 +40,22 @@ namespace aShopSolution.AdminApp.Controllers
                 CategoryId = categoryId
             };
 
+            // get one page
             var data = await _userProductApiClient.GetPagings(request);
+
+            // keep keyword dont disapear
             ViewBag.keyword = keyword;
 
             var categories = await _categoryApiClient.GetAll(currentLanguageId);
+
+            // show drop down category on view
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
                 Text = x.Name,
                 Value = x.Id.ToString(),
                 Selected = categoryId.HasValue && x.Id == categoryId
             });
+
             // the first time redirect
             if (TempData["result"] != null)
             {

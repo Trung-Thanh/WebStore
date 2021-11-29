@@ -147,7 +147,7 @@ namespace eShopSolution.ApiEntegration
             requestContent.Add(new StringContent(request.Name.ToString()), "name");
 
             // way 1
-            //requestContent.Add(new StringContent(request.id.ToString()), "id");
+            requestContent.Add(new StringContent(request.id.ToString()), "id");
             requestContent.Add(new StringContent(request.Description.ToString()), "description");
 
             requestContent.Add(new StringContent(request.Details.ToString()), "details");
@@ -157,7 +157,7 @@ namespace eShopSolution.ApiEntegration
             requestContent.Add(new StringContent(languageId), "languageId");
 
             // way 2
-            var response = await client.PutAsync($"/api/products/{request.id}", requestContent);
+            var response = await client.PutAsync($"/api/products/", requestContent);
             return response.IsSuccessStatusCode;
         }
     }

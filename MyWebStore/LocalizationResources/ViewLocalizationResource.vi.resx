@@ -153,9 +153,25 @@
     <value>Đăng nhập</value>
     <comment>Layout</comment>
   </data>
+  <data name="New | Available" xml:space="preserve">
+    <value>Mới | Có sẵn</value>
+    <comment>common</comment>
+  </data>
+  <data name="page" xml:space="preserve">
+    <value>trang</value>
+    <comment>common</comment>
+  </data>
+  <data name="products are available" xml:space="preserve">
+    <value>sản phẩm có sẵn</value>
+    <comment>Product/Category</comment>
+  </data>
   <data name="productUrl" xml:space="preserve">
     <value>san-pham</value>
     <comment>Home/Index</comment>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>Sắp xếp theo</value>
+    <comment>Product/Category</comment>
   </data>
   <data name="Specials Offer" xml:space="preserve">
     <value>Khuyến mãi</value>
@@ -168,5 +184,9 @@
   <data name="VIEW" xml:space="preserve">
     <value>XEM</value>
     <comment>/Home/Index</comment>
+  </data>
+  <data name="View Details" xml:space="preserve">
+    <value>Xem chi tiết</value>
+    <comment>Product/Category</comment>
   </data>
 </root>

@@ -17,7 +17,7 @@ namespace eShopSolution.WebApi.Controllers
     //api/prodcuts
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _ProductService;
@@ -51,6 +51,7 @@ namespace eShopSolution.WebApi.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
+        [Authorize]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -69,15 +70,16 @@ namespace eShopSolution.WebApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = productId }, product);
         }
 
-        [HttpPut("{productId}")]
+        [HttpPut]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Update([FromRoute] int productId ,[FromForm] ProductUpdateRequest request)
+        [Authorize]
+        public async Task<IActionResult> Update(/*[FromRoute] int productId ,*/[FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            request.id = productId;
+            //request.id = productId;
             var affectedResult = await _ProductService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
@@ -85,6 +87,7 @@ namespace eShopSolution.WebApi.Controllers
         }
 
         [HttpDelete("{productId}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int productId)
         {
             var affectedResult = await _ProductService.Delete(productId);
@@ -95,6 +98,7 @@ namespace eShopSolution.WebApi.Controllers
 
         // just update a part of whole object use HTTP Patch
         [HttpPatch ("price/{ProductId}/{newPrice}")]
+        [Authorize]
         public async Task<IActionResult> UpdatePrice(int ProductId, decimal newPrice)
         {
             var isSuccessful = await _ProductService.UpdatePrice(ProductId, newPrice);
@@ -106,6 +110,7 @@ namespace eShopSolution.WebApi.Controllers
 
         /*Image jobs*/
         [HttpPost("{productId}/images")]
+        [Authorize]
         public async Task<IActionResult> CreateImage(int productId, [FromForm] ProductImageCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -123,6 +128,7 @@ namespace eShopSolution.WebApi.Controllers
 
         // update image dont need product id
         [HttpPut("{productId}/images/{imageId}")]
+        [Authorize]
         public async Task<IActionResult> UpdateImage(int imageId, [FromForm] ProductImageUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -138,6 +144,7 @@ namespace eShopSolution.WebApi.Controllers
 
         // remove image dont need product id
         [HttpDelete("{productId}/images/{imageId}")]
+        [Authorize]
         public async Task<IActionResult> RemoveImage(int imageId)
         {
             if (!ModelState.IsValid)
@@ -152,6 +159,7 @@ namespace eShopSolution.WebApi.Controllers
         }
 
         [HttpGet("{productId}/images/{imageId}")]
+        [Authorize]
         public async Task<IActionResult> GetImageById(int productId, int imageId)
         {
             var image = await _ProductService.GetImageById(imageId);
@@ -162,6 +170,7 @@ namespace eShopSolution.WebApi.Controllers
 
         // role assign
         [HttpPut("{id}/categories")]
+        [Authorize]
         public async Task<IActionResult> CategoryAssign(int id, [FromBody] CategoryAssignRequest request)
         {
             if (!ModelState.IsValid)
