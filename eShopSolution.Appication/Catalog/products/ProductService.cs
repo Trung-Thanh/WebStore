@@ -283,6 +283,8 @@ namespace eShopSolution.Appication.Catalog.products
             {
                 throw new eShopSolutionExcreption($"can not find a product with id = {request.id}");
             }
+
+            product.IsFeature = request.IsFeature;
             productTranslation.Description = request.Description;
             productTranslation.Details = request.Details;
             productTranslation.Name = request.Name;
@@ -299,6 +301,20 @@ namespace eShopSolution.Appication.Catalog.products
                     thumbnailImage.fileSize = request.ThumbnailImage.Length;
                     thumbnailImage.imagePath = await this.SaveFile(request.ThumbnailImage);
                     _context.productImages.Update(thumbnailImage);
+                }
+                else
+                {
+                    var image = new ProductImage()
+                    {
+                        caption = "ThumbnailImage",
+                        dateCreate = DateTime.Today,
+                        fileSize = request.ThumbnailImage.Length,
+                        imagePath = await this.SaveFile(request.ThumbnailImage),
+                        isDefault = true,
+                        productId = request.id,
+                        sortOrder = 1
+                    };
+                    await _context.productImages.AddAsync(image);
                 }
             }
             var result = await _context.SaveChangesAsync();
@@ -375,7 +391,8 @@ namespace eShopSolution.Appication.Catalog.products
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
                 Categories = categories,
-                ThumbnailImage = thumbnailImage != null ? thumbnailImage.imagePath : "empty.jpg" 
+                ThumbnailImage = thumbnailImage != null ? thumbnailImage.imagePath : "empty.jpg",
+                IsFeature = product.IsFeature
             };
             return productViewModel;
         }

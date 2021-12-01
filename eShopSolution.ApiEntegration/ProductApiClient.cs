@@ -157,9 +157,9 @@ namespace eShopSolution.ApiEntegration
 
             // way 1
             requestContent.Add(new StringContent(request.id.ToString()), "id");
+            requestContent.Add(new StringContent(request.IsFeature.ToString()), "IsFeature");
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "name");
-
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "description");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Details) ? "" : request.Details.ToString()), "details");
 
