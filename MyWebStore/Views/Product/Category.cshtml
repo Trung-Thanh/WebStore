@@ -1,9 +1,9 @@
 ﻿@model ProductsInCategoryViewModel
 @inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
-@inject  Microsoft.Extensions.Configuration.IConfiguration _conf;  
+@inject Microsoft.Extensions.Configuration.IConfiguration _conf;
 
 @{
-    ViewData["Title"] = Model.Category.Name + (Model.Products.PageIndex == 1? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
+    ViewData["Title"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
     ViewData["Description"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -119,17 +119,7 @@
 <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
 
 <!-- phân trang -->
-<div class="pagination">
-    <ul>
-        <li><a href="#">&lsaquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">...</a></li>
-        <li><a href="#">&rsaquo;</a></li>
-    </ul>
-</div>
+@await Component.InvokeAsync("Pager", Model.Products)
 <br class="clr" />
 
 
