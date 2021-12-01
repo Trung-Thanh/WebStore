@@ -145,6 +145,10 @@
     <value>Featured Products</value>
     <comment>Home/Index</comment>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+    <comment>Common</comment>
+  </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Latest Products</value>
     <comment>Home/Index</comment>

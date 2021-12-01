@@ -280,6 +280,10 @@ namespace eShopSolution.Appication.Catalog.products
         public async Task<CMProductViewModel> GetById(int productId, string languageId)
         {
             var product = await _context.Products.FindAsync(productId);
+            var thumbnailImage = await (from pi in _context.productImages 
+                                        where pi.isDefault == true && pi.productId == productId
+                                        select pi.imagePath).FirstOrDefaultAsync();
+
             var productTranslation = await _context.productTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
 
             var categories = await (from c in _context.Categories
@@ -303,7 +307,8 @@ namespace eShopSolution.Appication.Catalog.products
                 SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
-                Categories = categories
+                Categories = categories,
+                ThumbnailImage = thumbnailImage
             };
             return productViewModel;
         }

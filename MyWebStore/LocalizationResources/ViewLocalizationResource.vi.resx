@@ -145,6 +145,10 @@
     <value>Sản phẩm nổi bật</value>
     <comment>/Home/Index</comment>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Trang chủ</value>
+    <comment>Common</comment>
+  </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Sản phẩm mới nhất</value>
     <comment>/Home/Index</comment>
@@ -155,11 +159,11 @@
   </data>
   <data name="New | Available" xml:space="preserve">
     <value>Mới | Có sẵn</value>
-    <comment>common</comment>
+    <comment>Common</comment>
   </data>
   <data name="page" xml:space="preserve">
     <value>trang</value>
-    <comment>common</comment>
+    <comment>Common</comment>
   </data>
   <data name="products are available" xml:space="preserve">
     <value>sản phẩm có sẵn</value>

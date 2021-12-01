@@ -20,6 +20,7 @@ namespace eShopColution.Utilities.Constants
         {
             public const int numberOfFeaturedProducts = 12;
             public const int numberOfLatestProducts = 6;
+            public const int numberOfProductsInCategory = 2;
         }
 
         public class BussinessConstant

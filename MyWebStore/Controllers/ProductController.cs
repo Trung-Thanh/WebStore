@@ -6,6 +6,8 @@ using eShopSolution.ApiEntegration;
 using eShopSolution.ViewModels.Catalog.forManager;
 using Microsoft.AspNetCore.Mvc;
 using MyWebStore.Models;
+using eShopColution.Utilities.Constants;
+using static eShopColution.Utilities.Constants.SystemConstants;
 
 namespace MyWebStore.Controllers
 {
@@ -20,11 +22,6 @@ namespace MyWebStore.Controllers
             _productApiClient = productApiClient;
         }
         // we added endpoint url to start up so we can get parameter at those method
-        public IActionResult Detail(int id)
-        {
-            return View();
-        }
-
         // culture, id get form endpoint url
         public async Task<IActionResult> Category(int id, string culture, int pageIndex=1)
         {
@@ -32,7 +29,7 @@ namespace MyWebStore.Controllers
                 CategoryId = id,
                 PageIndex = pageIndex,
                 LanguageId = culture,
-                PageSize = 6
+                PageSize = ProductSettings.numberOfProductsInCategory,
             });
 
             
@@ -40,6 +37,18 @@ namespace MyWebStore.Controllers
                 Category = await _categoryApiClient.GetById(id, culture),
                 Products = products
             });
+        }
+
+        // culture, id get form endpoint url
+        public async Task<IActionResult> Detail(int id, string culture)
+        {
+            var product = await _productApiClient.GetById(id, culture);
+            return View(new ProductDetailViewModel()
+            {
+                Product = product,
+                Category = await _categoryApiClient.GetById(1, culture)
+            });
+
         }
     }
 }
