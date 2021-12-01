@@ -34,6 +34,7 @@ namespace eShopSolution.Appication.Catalog.products
 
         // this method to get a page of product
         Task<PageResult<CMProductViewModel>> GetAllPaging(MngProductPagingRequest request);
+        Task<PageResult<CMProductViewModel>> GetAllPaging_DontContainImg(MngProductPagingRequest request);
 
         // Work with image:
         Task<int> AddImage(int productId, ProductImageCreateRequest request);

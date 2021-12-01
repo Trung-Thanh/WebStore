@@ -37,6 +37,12 @@ namespace eShopSolution.ApiEntegration
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.keyWord}&LanguageId={request.LanguageId}&categoryId={request.CategoryId}", true);
         }
 
+        public async Task<PageResult<CMProductViewModel>> GetAllPaging_DontContainImg(MngProductPagingRequest request)
+        {
+            return await GetAsync<PageResult<CMProductViewModel>>($"/api/products/NoImage/paging?pageIndex=" +
+               $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.keyWord}&LanguageId={request.LanguageId}&categoryId={request.CategoryId}", true);
+        }
+
         // create product
         public  async Task<bool> Create(ProductCreateRequest request)
         {
@@ -64,13 +70,16 @@ namespace eShopSolution.ApiEntegration
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "originalPrice");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
-            requestContent.Add(new StringContent(request.Name.ToString()), "name");
-            requestContent.Add(new StringContent(request.Description.ToString()), "description");
 
-            requestContent.Add(new StringContent(request.Details.ToString()), "details");
-            requestContent.Add(new StringContent(request.SeoDescription.ToString()), "seoDescription");
-            requestContent.Add(new StringContent(request.SeoTitle.ToString()), "seoTitle");
-            requestContent.Add(new StringContent(request.SeoAlias.ToString()), "seoAlias");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "name");
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Details) ? "" : request.Details.ToString()), "details");
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoDescription) ? "" : request.SeoDescription.ToString()), "seoDescription");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoTitle) ? "" : request.SeoTitle.ToString()), "seoTitle");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoAlias) ? "" : request.SeoAlias.ToString()), "seoAlias");
+
             requestContent.Add(new StringContent(languageId), "languageId");
 
             var response = await client.PostAsync($"/api/products/", requestContent);
@@ -144,21 +153,33 @@ namespace eShopSolution.ApiEntegration
             //requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "originalPrice");
             //requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
 
-            requestContent.Add(new StringContent(request.Name.ToString()), "name");
+            
 
             // way 1
             requestContent.Add(new StringContent(request.id.ToString()), "id");
-            requestContent.Add(new StringContent(request.Description.ToString()), "description");
 
-            requestContent.Add(new StringContent(request.Details.ToString()), "details");
-            requestContent.Add(new StringContent(request.SeoDescription.ToString()), "seoDescription");
-            requestContent.Add(new StringContent(request.SeoTitle.ToString()), "seoTitle");
-            requestContent.Add(new StringContent(request.SeoAlias.ToString()), "seoAlias");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "name");
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Details) ? "" : request.Details.ToString()), "details");
+
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoDescription) ? "" : request.SeoDescription.ToString()), "seoDescription");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoTitle) ? "" : request.SeoTitle.ToString()), "seoTitle");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoAlias) ? "" : request.SeoAlias.ToString()), "seoAlias");
+
             requestContent.Add(new StringContent(languageId), "languageId");
 
             // way 2
             var response = await client.PutAsync($"/api/products/", requestContent);
             return response.IsSuccessStatusCode;
         }
+
+        //DELETE
+        public async Task<bool> Delete(int id)
+        {
+            return await DeleteAsync($"api/products/{id}", true);
+        }
+
+        
     }
 }

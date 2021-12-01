@@ -41,17 +41,16 @@
                 <div class="span6">Welcome!<strong> User</strong></div>
                 <div class="span6">
                     <div class="pull-right">
-                        @*<a href="/vi/Home/SetCultureCookie?cltr=en&returnUrl=/en"><span localize-content>English</span></a>
-        <a href="/en/Home/SetCultureCookie?cltr=en&returnUrl=/vi"><span localize-content>Vietnamese</span></a>*@
 
+                        @*run this method to set*@ 
                         <language-nav cookie-handler-url="@Url.Action("SetCultureCookie", "Home", new { area="", cltr="{0}", returnUrl="{1}" })"></language-nav>
 
-                        <a href="product_summary.html">
+                        @*<a href="product_summary.html">
                             <span class="">$</span>
-                        </a>
+                        </a>*@
                         <a href="product_summary.html">
                             <span class="btn btn-mini btn-primary">
-                                <i class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart
+                                <i class="icon-shopping-cart icon-white"></i> [ 3 ] <localize>Itemes in your cart</localize>
                             </span>
                         </a>
                     </div>
@@ -59,13 +58,17 @@
             </div>
             <!-- Navbar ================================================== -->
             <div id="logoArea" class="navbar">
+                @*FOR SMALL SCREEN*@
                 <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
+
                 <div class="navbar-inner">
-                    <a class="brand" href="index.html"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
+                    @*LOGO*@
+                    <a class="brand" href="/@culture/Home/Index"><img src="/themes/images/logo3.png" alt="MinimalismShop" /></a>
+
                     <form class="form-inline navbar-search" method="post" action="products.html">
                         <input id="srchFld" class="srchTxt" type="text" />
                         <select class="srchTxt">

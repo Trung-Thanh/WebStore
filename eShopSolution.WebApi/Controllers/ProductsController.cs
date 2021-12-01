@@ -37,6 +37,13 @@ namespace eShopSolution.WebApi.Controllers
             return Ok(product);
         }
 
+        [HttpGet("NoImage/{languageId}")]
+        public async Task<IActionResult> GetAllPaging_DontContainImg([FromQuery] MngProductPagingRequest request)
+        {
+            var product = await _ProductService.GetAllPaging_DontContainImg(request);
+            return Ok(product);
+        }
+
         /*Manage service*/
 
         //http://localhost:port/product/id

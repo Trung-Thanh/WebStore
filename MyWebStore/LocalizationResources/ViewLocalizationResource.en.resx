@@ -149,6 +149,10 @@
     <value>Home</value>
     <comment>Common</comment>
   </data>
+  <data name="Itemes in your cart" xml:space="preserve">
+    <value>Itemes in your cart</value>
+    <comment>Common</comment>
+  </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Latest Products</value>
     <comment>Home/Index</comment>

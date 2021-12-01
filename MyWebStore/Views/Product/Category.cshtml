@@ -4,7 +4,8 @@
 
 @{
     ViewData["Title"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
-    ViewData["Description"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
+    // may be can repale wỉh #tag
+    // ViewData["Description"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{

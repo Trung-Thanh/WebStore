@@ -46,7 +46,7 @@ namespace MyWebStore.Controllers
             return View(new ProductDetailViewModel()
             {
                 Product = product,
-                Category = await _categoryApiClient.GetById(1, culture)
+                // Category = await _categoryApiClient.GetById(1, culture)
             });
 
         }

@@ -13,7 +13,7 @@ namespace eShopSolution.Data.Entities
         public int ViewCount { get; set; }
         public DateTime DateCreated { get; set; }
 
-        public bool? IsFeature { get; set; }
+        public bool IsFeature { get; set; }
         //thể hiện rằng một trường - một sản phẩm có một list nhưng loại mà nó thuộc về
         public List<ProductsInCategories> ProductsInCategories { get; set; }
         public List<OrderDetail> orderDetails { get; set; }

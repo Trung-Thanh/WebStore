@@ -149,6 +149,10 @@
     <value>Trang chủ</value>
     <comment>Common</comment>
   </data>
+  <data name="Itemes in your cart" xml:space="preserve">
+    <value>vật phận đã thêm vào giỏ hàng</value>
+    <comment>Common</comment>
+  </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Sản phẩm mới nhất</value>
     <comment>/Home/Index</comment>
