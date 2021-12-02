@@ -35,11 +35,15 @@ namespace eShopSolution.ViewModels.Catalog.forManager
         public string LanguageId { set; get; }
 
         [Display(Name = "Có phải sản phẩm nổi bật ?")]
-        public bool? IsFeature { get; set; }
+        public bool IsFeature { get; set; }
 
 
-        [Display(Name = "Ảnh minh họa")]
+        [Display(Name = "Ảnh minh họa chính")]
         public  IFormFile ThumbnailImage { get; set; }
+
+        [Display(Name = "Các ảnh minh họa phụ")]
+        public List<IFormFile> LittleFingernails { get; set; }
+
 
     }
 }

@@ -89,24 +89,46 @@ namespace eShopSolution.Appication.Catalog.products
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-                productTranslations = translationsForAllLanguage
+                productTranslations = translationsForAllLanguage,
+                IsFeature = request.IsFeature
             };
+
             // save image
-            if (request.ThumbnailImage != null)
+            if (request.ThumbnailImage != null || request.LittleFingernails != null)
             {
-                product.productImages = new List<ProductImage>()
+                product.productImages = new List<ProductImage>();
+
+                if(request.ThumbnailImage != null)
                 {
-                    new ProductImage()
+                    product.productImages.Add(
+                        new ProductImage()
+                        {
+                            caption = "Thmbnail image",
+                            dateCreate = DateTime.Now,
+                            fileSize = request.ThumbnailImage.Length,
+                            imagePath = await this.SaveFile(request.ThumbnailImage),
+                            isDefault = true,
+                            sortOrder = 1
+                        });                  
+                }
+                if (request.LittleFingernails != null)
+                {
+                    foreach(var i in request.LittleFingernails)
                     {
-                        caption = "Thmbnail image",
-                        dateCreate = DateTime.Now,
-                        fileSize = request.ThumbnailImage.Length,
-                        imagePath = await this.SaveFile(request.ThumbnailImage),
-                        isDefault = true,
-                        sortOrder = 1
-                    }
+                        product.productImages.Add(
+                        new ProductImage()
+                        {
+                            caption = "LittleFingernails",
+                            dateCreate = DateTime.Now,
+                            fileSize = i.Length,
+                            imagePath = await this.SaveFile(i),
+                            isDefault = false,
+                            sortOrder = 2
+                        });
+                    }    
                 };
             }
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product.Id;

@@ -66,6 +66,7 @@ namespace eShopSolution.WebApi.Controllers
                 return BadRequest();
             }
             var productId = await _ProductService.Create(request);
+
             if (productId == 0)
                 return BadRequest();
 

@@ -26,5 +26,7 @@ namespace eShopSolution.ViewModels.Catalog
         public List<string> Categories { get; set; } = new List<string>();
 
         public string ThumbnailImage { get; set; }
+
+        public List<string> LittleFingernails { get; set; }
     }
 }

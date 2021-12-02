@@ -70,17 +70,18 @@
                         <span asp-validation-for="SeoAlias" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="LanguageId" class="control-label"></label>
-                        <input asp-for="LanguageId" class="form-control" />
-                        <span asp-validation-for="LanguageId" class="text-danger"></span>
+                        <label asp-for="ThumbnailImage" class="control-label"></label>
+                        <input asp-for="ThumbnailImage" type="file" class="form-control" />
+                        <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                     </div>
+                    <br />
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="IsFeature" name="IsFeature"/> Sản phẩm nổi bật
+                            <input class="form-check-input" asp-for="IsFeature" name="IsFeature" /> Sản phẩm nổi bật
                             <input type="hidden" value="false" name="IsFeature" />
                         </label>
                     </div>
-                    <hr/>
+                    <hr />
                     <div class="form-group">
                         <input type="submit" value="Cập nhật" class="btn btn-primary" />
                     </div>
