@@ -10,7 +10,7 @@
 }
 
 <ul class="breadcrumb">
-    <li><a href="index.html"><localize>Home</localize></a> <span class="divider">/</span></li>
+    <li><a href="/@culture.Name/Home/Index"><localize>Home</localize></a> <span class="divider">/</span></li>
     @*<li><a href="/@culture/@_loc["categoryUrl"]/@Model.Category.Id">@Model.Category.Name</a> <span class="divider">/</span></li>*@
     <li class="active">@Model.Product.Name</li>
 </ul>
@@ -79,31 +79,31 @@
 
     <div class="span6">
         @*Main name*@
-        <h3>Fujifilm FinePix S2950 Digital Camera </h3>
+        <h3>@Model.Product.Name</h3>
         @*main note*@
         @*<small>- (14MP, 18x Optical Zoom) 3-inch LCD</small>*@
         <hr class="soft" />
         <form class="form-horizontal qtyFrm">
             <div class="control-group">
                 @*price*@
-                <label class="control-label"><span>$222.00</span></label>
+                <label class="control-label"><span>@Model.Product.Price.ToString("C",culture)</span></label>
                 @*order*@
-                <div class="controls">
-                    <input type="number" class="span1" placeholder="Qty." />
-                    <button type="submit" class="btn btn-large btn-primary pull-right">
-                        Add to cart <i class=" icon-shopping-cart"></i>
-                    </button>
-                </div>
+            <div class="controls">             
+                <span>@($"{_loc["qty"]} ")</span> <input type="number" class="span1" />
+                <button type="submit" class="btn btn-large btn-primary pull-right">
+                    <localize>Add to</localize><i class=" icon-shopping-cart"></i>
+                </button>
+            </div>
             </div>
         </form>
 
         <hr class="soft" />
         @*stock*@
-        <h4>100 items in stock</h4>
+        <h4>@(Model.Product.Stock+" ")<localize>items in stock</localize></h4>
         @*color*@
         <form class="form-horizontal qtyFrm pull-right">
             <div class="control-group">
-                <label class="control-label"><span>Color</span></label>
+                <label class="control-label"><span><localize>Color</localize></span></label>
                 <div class="controls">
                     <select class="span2">
                         <option>Black</option>
@@ -120,7 +120,7 @@
             @Model.Product.Description
         </p>
         @*more detail*@
-        <a class="btn btn-small pull-right" href="#detail">More Details</a>
+        <a class="btn btn-small pull-right" href="#detail"><localize>More Details</localize></a>
         <br class="clr" />
         <a href="#" name="detail"></a>
         <hr class="soft" />
@@ -129,8 +129,8 @@
     <div class="span9">
         @*2 tab*@
         <ul id="productDetail" class="nav nav-tabs">
-            <li class="active"><a href="#home" data-toggle="tab">Product Details</a></li>
-            <li><a href="#profile" data-toggle="tab">Related Products</a></li>
+            <li class="active"><a href="#home" data-toggle="tab"><localize>Product Details</localize></a></li>
+            <li><a href="#profile" data-toggle="tab"><localize>Related Products</localize></a></li>
         </ul>
         @*tab 1: Product Details*@
         <div id="myTabContent" class="tab-content">

@@ -67,11 +67,26 @@ namespace eShopSolution.ApiEntegration
                 requestContent.Add(bytes, "ThumbnailImage", request.ThumbnailImage.FileName);
             }
 
+            if (request.LittleFingernails != null)
+            {
+                for (int i=0; i< request.LittleFingernails.Count();i++)
+                {
+                    byte[] data;
+                    using (var br = new BinaryReader(request.LittleFingernails[i].OpenReadStream()))
+                    {
+                        data = br.ReadBytes((int)request.LittleFingernails[i].OpenReadStream().Length);
+                    }
+                    ByteArrayContent bytes = new ByteArrayContent(data);
+                    requestContent.Add(bytes, "LittleFingernails", request.LittleFingernails[i].FileName);
+                }             
+            }
+
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "originalPrice");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "name");
+            requestContent.Add(new StringContent(request.IsFeature.ToString()), "IsFeature");
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "description");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Details) ? "" : request.Details.ToString()), "details");

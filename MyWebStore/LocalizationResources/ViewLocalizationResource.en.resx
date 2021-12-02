@@ -125,6 +125,10 @@
     <value>category</value>
     <comment>_layout</comment>
   </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+    <comment>Product/Detail</comment>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
     <comment>Layout</comment>
@@ -153,6 +157,10 @@
     <value>Itemes in your cart</value>
     <comment>Common</comment>
   </data>
+  <data name="items in stock" xml:space="preserve">
+    <value>items in stock</value>
+    <comment>Product/Detail</comment>
+  </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Latest Products</value>
     <comment>Home/Index</comment>
@@ -160,6 +168,10 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
     <comment>Layout</comment>
+  </data>
+  <data name="More Details" xml:space="preserve">
+    <value>More Details</value>
+    <comment>Common</comment>
   </data>
   <data name="New | Available" xml:space="preserve">
     <value>New | Available</value>
@@ -169,6 +181,10 @@
     <value>page</value>
     <comment>Common</comment>
   </data>
+  <data name="Product Details" xml:space="preserve">
+    <value>Product Details</value>
+    <comment>Common</comment>
+  </data>
   <data name="products are available" xml:space="preserve">
     <value>products are available</value>
     <comment>Product/Category</comment>
@@ -176,6 +192,14 @@
   <data name="productUrl" xml:space="preserve">
     <value>product</value>
     <comment>Home/Index</comment>
+  </data>
+  <data name="qty" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Common</comment>
+  </data>
+  <data name="Related Products" xml:space="preserve">
+    <value>Related Products</value>
+    <comment>Product/Detail</comment>
   </data>
   <data name="Sort By" xml:space="preserve">
     <value>Sort By</value>
