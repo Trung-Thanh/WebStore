@@ -125,9 +125,77 @@ namespace eShopSolution.Appication.Catalog.products
                 await _storageService.DeleteFileAsync(image.imagePath);
             }
 
+            // có thể là xóa q ràng buộc luôn
             _context.Products.Remove(product);
 
             return await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<PageResult<CMProductViewModel>> GetAllPaging_DontContainImg(MngProductPagingRequest request)
+        {
+
+            // 1.join 4: product, productInCategory, Category, productTranslation
+            // note: request include keyword to match name of product (pt), 
+            // and categoryId to filter base on categoryid
+            var query = from p in _context.Products
+                        join pt in _context.productTranslations on p.Id equals pt.ProductId
+                        //into ppt
+                        //from pt in ppt.DefaultIfEmpty()
+
+                        join pic in _context.ProductsInCategories on p.Id equals pic.ProductId into ppic
+                        from pic in ppic.DefaultIfEmpty()
+
+                        join c in _context.Categories on pic.CategoryId equals c.Id into picc
+                        from c in picc.DefaultIfEmpty()
+
+                        where pt.LanguageId == request.LanguageId
+                        select new { p, pt, pic};
+
+            // filter
+            // filter by keywork form admin
+            if (!string.IsNullOrEmpty(request.keyWord))
+            {
+                query = query.Where(x => x.pt.Name.Contains(request.keyWord.Trim()));
+            }
+
+            // filter by al list of category id
+            if (request.CategoryId != null && request.CategoryId != 0)
+            {
+                // this query so strong
+                query = query.Where(x => x.pic.CategoryId == request.CategoryId);
+            }
+
+            // pagging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+                .Select(x => new CMProductViewModel()
+                {
+                    Id = x.p.Id,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
+                    Name = x.pt.Name,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount
+                }).ToListAsync();
+
+            // select and projection
+            var pageResult = new PageResult<CMProductViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
+            };
+            return pageResult;
         }
 
         // this method bellow return all infor about a product
@@ -215,6 +283,8 @@ namespace eShopSolution.Appication.Catalog.products
             {
                 throw new eShopSolutionExcreption($"can not find a product with id = {request.id}");
             }
+
+            product.IsFeature = request.IsFeature;
             productTranslation.Description = request.Description;
             productTranslation.Details = request.Details;
             productTranslation.Name = request.Name;
@@ -231,6 +301,20 @@ namespace eShopSolution.Appication.Catalog.products
                     thumbnailImage.fileSize = request.ThumbnailImage.Length;
                     thumbnailImage.imagePath = await this.SaveFile(request.ThumbnailImage);
                     _context.productImages.Update(thumbnailImage);
+                }
+                else
+                {
+                    var image = new ProductImage()
+                    {
+                        caption = "ThumbnailImage",
+                        dateCreate = DateTime.Today,
+                        fileSize = request.ThumbnailImage.Length,
+                        imagePath = await this.SaveFile(request.ThumbnailImage),
+                        isDefault = true,
+                        productId = request.id,
+                        sortOrder = 1
+                    };
+                    await _context.productImages.AddAsync(image);
                 }
             }
             var result = await _context.SaveChangesAsync();
@@ -280,9 +364,8 @@ namespace eShopSolution.Appication.Catalog.products
         public async Task<CMProductViewModel> GetById(int productId, string languageId)
         {
             var product = await _context.Products.FindAsync(productId);
-            var thumbnailImage = await (from pi in _context.productImages 
-                                        where pi.isDefault == true && pi.productId == productId
-                                        select pi.imagePath).FirstOrDefaultAsync();
+
+            var thumbnailImage = await _context.productImages.Where(x => x.isDefault == true && x.productId == productId).FirstOrDefaultAsync();
 
             var productTranslation = await _context.productTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
 
@@ -308,7 +391,8 @@ namespace eShopSolution.Appication.Catalog.products
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
                 Categories = categories,
-                ThumbnailImage = thumbnailImage
+                ThumbnailImage = thumbnailImage != null ? thumbnailImage.imagePath : "empty.jpg",
+                IsFeature = product.IsFeature
             };
             return productViewModel;
         }

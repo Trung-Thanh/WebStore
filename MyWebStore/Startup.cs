@@ -32,10 +32,11 @@ namespace MyWebStore
             services.AddHttpClient();
 
             var cultures = new[]
-           {
+            {
                 new CultureInfo("vi"),
                 new CultureInfo("en"),
             };
+
             services.AddControllersWithViews().AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(ops =>
             {
                 // When using all the culture providers, the localization process will
@@ -65,6 +66,7 @@ namespace MyWebStore
                     o.DefaultRequestCulture = new RequestCulture("vi");
                 };
             }); ;
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -75,6 +77,15 @@ namespace MyWebStore
             services.AddTransient<ISlideApiClient, SlideApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+
+            // does not bien dich again
+            IMvcBuilder builder = services.AddRazorPages();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (environment == Environments.Development)
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

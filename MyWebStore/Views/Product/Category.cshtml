@@ -4,12 +4,20 @@
 
 @{
     ViewData["Title"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
-    ViewData["Description"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
+    // may be can repale wỉh #tag
+    // ViewData["Description"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : $" {_loc["page"]} {Model.Products.PageIndex}");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{
     var culture = CultureInfo.CurrentCulture;
 }
+<style>
+    .productThumbnail {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+</style>
 
 <ul class="breadcrumb">
     <li><a href="index.html">Home</a> <span class="divider">/</span></li>
@@ -53,7 +61,7 @@
             <div class="row">
                 <div class="span2">
                     @*thay ngoac tron bang goach nhon va dieu ki dieu*@
-                    <img src="@(_conf["ProductImageAddress"] + product.ThumbnailImage)" alt="@product.Name" />
+                    <img class="productThumbnail" src="@(_conf["ProductImageAddress"] + product.ThumbnailImage)" alt="@product.Name" />
                 </div>
                 <div class="span4">
                     <h3><localize>New | Available</localize></h3>
@@ -93,7 +101,7 @@
                 var product = Model.Products.Items[i];
                 <li class="span3">
                     <div class="thumbnail">
-                        <a href="/@culture/@_loc["productUrl"]/@product.Id"><img src="@(_conf["ProductImageAddress"] + product.ThumbnailImage)" alt="@product.Name" /></a>
+                        <a href="/@culture/@_loc["productUrl"]/@product.Id"><img class="productThumbnail" src="@(_conf["ProductImageAddress"] + product.ThumbnailImage)" alt="@product.Name" /></a>
                         <div class="caption">
                             <h5>@product.Name</h5>
                             <p>

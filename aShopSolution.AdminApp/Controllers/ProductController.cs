@@ -41,7 +41,7 @@ namespace aShopSolution.AdminApp.Controllers
             };
 
             // get one page
-            var data = await _userProductApiClient.GetPagings(request);
+            var data = await _userProductApiClient.GetAllPaging_DontContainImg(request);
 
             // keep keyword dont disapear
             ViewBag.keyword = keyword;
@@ -76,6 +76,8 @@ namespace aShopSolution.AdminApp.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create(ProductCreateRequest request)
         {
+            request.LanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
             if (!ModelState.IsValid)
                 return View();
 
@@ -179,6 +181,34 @@ namespace aShopSolution.AdminApp.Controllers
             }
 
             ModelState.AddModelError("", "cập nhật phẩm không thành công");
+            return View(request);
+        }
+
+        // delete
+
+        [HttpGet]
+        // id form delete link on index page
+        public async Task<IActionResult> Delete(int id)
+        {
+            return View(new DeleteProductRequest { Id = id});
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteProductRequest request)
+        {
+            // show error of validation
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userProductApiClient.Delete(request.Id);
+
+            if (result)
+            {
+                TempData["result"] = "Xóa sản phẩm thành công";
+                return RedirectToAction("Index");
+            }
+
+            // so only model error = only bussiness error
+            ModelState.AddModelError("", "xóa sản phẩm không thành công");
             return View(request);
         }
     }

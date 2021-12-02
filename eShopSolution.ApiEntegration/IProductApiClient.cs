@@ -12,6 +12,8 @@ namespace eShopSolution.ApiEntegration
     public interface IProductApiClient
     {
         Task<PageResult<CMProductViewModel>> GetPagings(MngProductPagingRequest request);
+
+        Task<PageResult<CMProductViewModel>> GetAllPaging_DontContainImg(MngProductPagingRequest request);
         Task<bool> Create(ProductCreateRequest request);
 
         Task<CMProductViewModel> GetById(int id, string languageId);
@@ -22,5 +24,8 @@ namespace eShopSolution.ApiEntegration
         Task<List<CMProductViewModel>> GetLatestProducts(string languageId, int take);
 
         Task<bool> Update(ProductUpdateRequest request);
+
+        Task<bool> Delete(int id);
+
     }
 }

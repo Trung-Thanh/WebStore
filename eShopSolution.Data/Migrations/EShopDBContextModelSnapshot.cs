@@ -179,7 +179,7 @@ namespace eShopSolution.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "0c2eba9d-8a63-49cc-87c9-261c24f99c89",
+                            ConcurrencyStamp = "92892222-7c17-4674-b485-2040bc8e23ea",
                             Name = "admin",
                             NormalizedName = "admin",
                             description = "Administrator role"
@@ -256,14 +256,14 @@ namespace eShopSolution.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ae88023-82c8-4fb5-bb4c-2556b8cb02f9",
+                            ConcurrencyStamp = "4a207b4d-301c-4848-8db5-e3f5c098e829",
                             Dob = new DateTime(200, 10, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "vvakemyfresh@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "vvakemyfresh@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG5oVDneJ+IFjYW/+fNdZg3zb+7OdVrFvPdi9Camp+g/Huo6nAQrFtvvbbHyWagSgQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHJZU4oJbQdXmBaGuPh2TX04wcM/l1L1CdhRTANQmY+1E6VitPHKTXGkp9rtdb/EsA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -570,8 +570,10 @@ namespace eShopSolution.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsFeature")
-                        .HasColumnType("bit");
+                    b.Property<bool>("IsFeature")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<decimal>("OriginalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -597,7 +599,8 @@ namespace eShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2021, 11, 26, 16, 50, 12, 882, DateTimeKind.Local).AddTicks(5405),
+                            DateCreated = new DateTime(2021, 12, 1, 21, 45, 8, 597, DateTimeKind.Local).AddTicks(148),
+                            IsFeature = false,
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -656,11 +659,12 @@ namespace eShopSolution.Data.Migrations
                         .HasColumnType("varchar(5)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
 
                     b.Property<string>("Details")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<string>("Name")
                         .IsRequired()
