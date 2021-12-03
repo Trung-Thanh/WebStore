@@ -14,7 +14,7 @@ namespace eShopSolution.ApiEntegration
         Task<PageResult<CMProductViewModel>> GetPagings(MngProductPagingRequest request);
 
         Task<PageResult<CMProductViewModel>> GetAllPaging_DontContainImg(MngProductPagingRequest request);
-        Task<bool> Create(ProductCreateRequest request);
+        Task<int> Create(ProductCreateRequest request);
 
         Task<CMProductViewModel> GetById(int id, string languageId);
         Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request);

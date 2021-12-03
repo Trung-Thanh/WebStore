@@ -24,7 +24,7 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Cập nhật sản phẩm</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
         <li class="breadcrumb-item active">Cập nhật sản phẩm</li>
     </ol>
 
@@ -73,6 +73,18 @@
                         <label asp-for="ThumbnailImage" class="control-label"></label>
                         <input asp-for="ThumbnailImage" type="file" class="form-control" />
                         <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                    </div>
+
+                    <input type="radio" name="AddOrReplace" value="Replace">Thay thế
+                    <input type="radio" name="AddOrReplace" value="Add">Thêm vào<br />
+
+                    <div class="form-group">
+                        <label asp-for="LittleFingernails" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="LittleFingernails" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile"></label>
+                        </div>
+                        <span asp-validation-for="LittleFingernails" class="text-danger"></span>
                     </div>
                     <br />
                     <div class="form-group form-check">
