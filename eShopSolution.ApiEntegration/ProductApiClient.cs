@@ -44,7 +44,7 @@ namespace eShopSolution.ApiEntegration
         }
 
         // create product
-        public  async Task<bool> Create(ProductCreateRequest request)
+        public  async Task<int> Create(ProductCreateRequest request)
         {
             var languageId = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
@@ -98,7 +98,15 @@ namespace eShopSolution.ApiEntegration
             requestContent.Add(new StringContent(languageId), "languageId");
 
             var response = await client.PostAsync($"/api/products/", requestContent);
-            return response.IsSuccessStatusCode;
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            // return product Id
+            int productId = (int)JsonConvert.DeserializeObject(body, typeof(int));
+
+            return productId;
+
+            //return response.IsSuccessStatusCode;
         }
 
         public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request)
@@ -164,15 +172,29 @@ namespace eShopSolution.ApiEntegration
                 requestContent.Add(bytes, "ThumbnailImage", request.ThumbnailImage.FileName);
             }
 
+            if (request.LittleFingernails != null)
+            {
+                for (int i = 0; i < request.LittleFingernails.Count(); i++)
+                {
+                    byte[] data;
+                    using (var br = new BinaryReader(request.LittleFingernails[i].OpenReadStream()))
+                    {
+                        data = br.ReadBytes((int)request.LittleFingernails[i].OpenReadStream().Length);
+                    }
+                    ByteArrayContent bytes = new ByteArrayContent(data);
+                    requestContent.Add(bytes, "LittleFingernails", request.LittleFingernails[i].FileName);
+                }
+            }
             //requestContent.Add(new StringContent(request.Price.ToString()), "price");
             //requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "originalPrice");
             //requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
 
-            
+
 
             // way 1
             requestContent.Add(new StringContent(request.id.ToString()), "id");
             requestContent.Add(new StringContent(request.IsFeature.ToString()), "IsFeature");
+            requestContent.Add(new StringContent(request.IsReplace.ToString()), "IsReplace");
 
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "name");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? "" : request.Description.ToString()), "description");

@@ -339,6 +339,28 @@ namespace eShopSolution.Appication.Catalog.products
                     await _context.productImages.AddAsync(image);
                 }
             }
+            if (request.LittleFingernails != null)
+            {
+                if (request.IsReplace)
+                {
+                    var fingernailForDel = await _context.productImages.Where(x => x.isDefault == false && x.productId == request.id).ToListAsync();
+                    _context.productImages.RemoveRange(fingernailForDel);
+                }
+                foreach (var i in request.LittleFingernails)
+                {
+                    product.productImages.Add(
+                    new ProductImage()
+                    {
+                        caption = "LittleFingernails",
+                        dateCreate = DateTime.Now,
+                        fileSize = i.Length,
+                        imagePath = await this.SaveFile(i),
+                        isDefault = false,
+                        sortOrder = 2
+                    });
+                }
+            }
+
             var result = await _context.SaveChangesAsync();
             return result;
         }
@@ -389,6 +411,8 @@ namespace eShopSolution.Appication.Catalog.products
 
             var thumbnailImage = await _context.productImages.Where(x => x.isDefault == true && x.productId == productId).FirstOrDefaultAsync();
 
+            var littlFingers = await _context.productImages.Where(x => x.isDefault == false && x.productId == productId).Select(x => x.imagePath).ToListAsync();
+
             var productTranslation = await _context.productTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
 
             var categories = await (from c in _context.Categories
@@ -413,8 +437,9 @@ namespace eShopSolution.Appication.Catalog.products
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
                 Categories = categories,
-                ThumbnailImage = thumbnailImage != null ? thumbnailImage.imagePath : "empty.jpg",
-                IsFeature = product.IsFeature
+                ThumbnailImage = thumbnailImage != null ? thumbnailImage.imagePath : "empty",
+                IsFeature = product.IsFeature,
+                LittleFingernails = littlFingers
             };
             return productViewModel;
         }

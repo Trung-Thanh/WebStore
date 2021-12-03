@@ -91,6 +91,22 @@ namespace aShopSolution.AdminApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                   name: "Edit product",
+                   pattern: "Edit/{id}", new
+                   {
+                       controller = "Product",
+                       action = "Edit"
+                   });
+
+                endpoints.MapControllerRoute(
+                   name: "View product detail",
+                   pattern: "product-detail/{id}", new
+                   {
+                       controller = "Product",
+                       action = "Detail"
+                   });
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });

@@ -9,14 +9,18 @@
 
 @section Scripts{
     <script>
-        setTimeout(function () { $("#msgAlert").fadeOut('slow'); }, 2000);
+        setTimeout(function () {
+            $("#mess").fadeOut('slow');
+        }, 5000)
+
+        //$("#mess").empty().text("Mọi thông báo sẽ hiển thị ở đây");
     </script>
 }
 
 <div class="container-fluid">
     <h1 class="mt-4">Danh sách sản phẩm</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
         <li class="breadcrumb-item active">Danh sách sản phẩm</li>
     </ol>
     <div class="card mb-12">
@@ -52,14 +56,31 @@
         </div>
 
         <div class="card-body">
-            @if (ViewBag.successMsg != null)
+            @*@if (ViewBag.successMsg != null)
             {
                 <div class="row">
                     <div id="msgAlert" class="alert alert-success" role="alert">
-                        @ViewBag.successMsg
+                        @ViewBag.successMsg @{if (ViewBag.AddedProductId != null)
+                            {<a href="@($"/product-detail/{ViewBag.AddedProductId}")">, Xem sản phầm vừa thêm/sửa</a>}
+                        }
                     </div>
                 </div>
-            }
+            }*@
+            <div class="row">
+                <div id="msgAlert" class="alert alert-success" role="alert" style="height:60px">
+                    @{
+                        if (ViewBag.successMsg != null)
+                        {
+                            <span id="mess">
+                                @ViewBag.successMsg
+                            @if (ViewBag.AddedProductId != null)
+                            {<a href="@($"/product-detail/{ViewBag.AddedProductId}")">, Xem sản phầm vừa thêm - sửa</a>}
+                        </span>
+                    }
+                    }
+                    <span style="float:right;">Mọi thông báo sẽ hiển thị ở đây</span>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
@@ -85,29 +106,29 @@
                     <tbody>
                         @foreach (var item in Model.Items)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.OriginalPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Stock)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
-                                @Html.ActionLink("Gán danh mục", "CategoryAssign", new { id = item.Id }) |
-                                @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OriginalPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Stock)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                    @Html.ActionLink("Xem", "Detail", new { id = item.Id }) |
+                                    @Html.ActionLink("Gán danh mục", "CategoryAssign", new { id = item.Id }) |
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

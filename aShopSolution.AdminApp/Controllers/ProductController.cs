@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eShopColution.Utilities.Constants;
 using eShopSolution.ApiEntegration;
+using eShopSolution.ViewModels.Catalog;
 using eShopSolution.ViewModels.Catalog.forManager;
 using eShopSolution.ViewModels.Catalog.product.forManager;
 using eShopSolution.ViewModels.Common;
@@ -60,6 +61,8 @@ namespace aShopSolution.AdminApp.Controllers
             if (TempData["result"] != null)
             {
                 ViewBag.successMsg = TempData["result"];
+                if(TempData["addedProductId"]!=null)
+                ViewBag.AddedProductId = TempData["addedProductId"];
             }
             return View(data);
         }
@@ -76,15 +79,18 @@ namespace aShopSolution.AdminApp.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create(ProductCreateRequest request)
         {
+            
             request.LanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
 
             if (!ModelState.IsValid)
                 return View();
 
             var result = await _userProductApiClient.Create(request);
-            if (result)
+
+            if (result>0)
             {
                 TempData["result"] = "Thêm mới sản phẩm thành công";
+                TempData["addedProductId"] = result;
                 return RedirectToAction("Index");
             }
 
@@ -149,9 +155,10 @@ namespace aShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var currentLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
-            var product =  await _userProductApiClient.GetById(id, currentLanguageId);
+            var product = await _userProductApiClient.GetById(id, currentLanguageId);
 
-            var updateProductRequest = new ProductUpdateRequest() {
+            var updateProductRequest = new ProductUpdateRequest()
+            {
                 Description = product.Description,
                 Details = product.Details,
                 Name = product.Name,
@@ -168,15 +175,28 @@ namespace aShopSolution.AdminApp.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
-        {
+        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request, string AddOrReplace)
+        {            
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _userProductApiClient.Update(request);
+            if (AddOrReplace != null)
+            {
+                if (AddOrReplace.Equals("Add"))
+                {
+                    request.IsReplace = false;
+                }
+                else
+                {
+                    request.IsReplace = true;
+                }
+            }
+            
+             var result = await _userProductApiClient.Update(request);
             if (result)
             {
                 TempData["result"] = "cập nhật sản phẩm thành công";
+                TempData["addedProductId"] = request.id;
                 return RedirectToAction("Index");
             }
 
@@ -188,9 +208,9 @@ namespace aShopSolution.AdminApp.Controllers
 
         [HttpGet]
         // id form delete link on index page
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            return View(new DeleteProductRequest { Id = id});
+            return View(new DeleteProductRequest { Id = id });
         }
         [HttpPost]
         public async Task<IActionResult> Delete(DeleteProductRequest request)
@@ -210,6 +230,34 @@ namespace aShopSolution.AdminApp.Controllers
             // so only model error = only bussiness error
             ModelState.AddModelError("", "xóa sản phẩm không thành công");
             return View(request);
+        }
+
+        // detail
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var currentLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var product = await _userProductApiClient.GetById(id, currentLanguageId);
+
+            var productViewModel = new CMProductViewModel()
+            {
+                Description = product.Description,
+                Details = product.Details,
+                Name = product.Name,
+                SeoAlias = product.SeoAlias,
+                SeoDescription = product.SeoDescription,
+                SeoTitle = product.SeoTitle,
+                IsFeature = product.IsFeature,
+                Id = product.Id,
+                ThumbnailImage = product.ThumbnailImage,
+                LittleFingernails = product.LittleFingernails,
+                DateCreated = product.DateCreated,
+                OriginalPrice = product.OriginalPrice,
+                Price = product.Price,
+                Stock = product.Stock
+            };
+
+            return View(productViewModel);
         }
     }
 }

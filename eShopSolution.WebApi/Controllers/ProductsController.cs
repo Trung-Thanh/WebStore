@@ -75,7 +75,9 @@ namespace eShopSolution.WebApi.Controllers
 
             // name of getbyid is the abover method defined of manager service
             // to view what product was created, use this method
-            return CreatedAtAction(nameof(GetById), new { id = productId }, product);
+            //return CreatedAtAction(nameof(GetById), new { id = productId }, product);
+
+            return Ok(product.Id);
         }
 
         [HttpPut]
