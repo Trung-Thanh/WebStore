@@ -8,12 +8,12 @@
     <div class="well well-small"><a id="myCart" href="product_summary.html"><img src="/themes/images/ico-cart.png" alt="cart">3 Items in your cart  <span class="badge badge-warning pull-right">$155.00</span></a></div>
     <ul id="sideManu" class="nav nav-tabs nav-stacked">
         @{
-            var parents = Model.Where(x => x.ParentId == null);
+            var parents = Model.Where(x => x.ParentID == null);
         }
         @for (int i = 0; i < parents.Count(); i++)
         {
             var parent = parents.ElementAt(i);
-            var childrens = Model.Where(x => x.ParentId == parent.Id);
+            var childrens = Model.Where(x => x.ParentID == parent.Id);
             if (childrens.Count() > 0)
             {
                 foreach (var c in childrens)

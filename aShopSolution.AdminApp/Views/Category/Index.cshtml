@@ -1,0 +1,180 @@
+﻿@using eShopSolution.ViewModels.Catalog.Category;
+@using System.Collections;
+@model List<CategoryViewModel>;
+
+@{
+    ViewData["Title"] = "Danh sách danh mục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    List<CategoryViewModel> CgryLv1 = new List<CategoryViewModel>();
+    List<CategoryViewModel> CgryLv2 = new List<CategoryViewModel>();
+    List<CategoryViewModel> CgryLv3 = new List<CategoryViewModel>();
+
+    CgryLv1 = Model.Where(x => x.CategoryLv == 1).ToList();
+    CgryLv2 = Model.Where(x => x.CategoryLv == 2).ToList();
+    CgryLv3 = Model.Where(x => x.CategoryLv == 3).ToList();
+
+    // add data for select list of category level 2
+    // to select the parent category for data filtering
+    var selectListCLv2 = CgryLv1.Select(x => new SelectListItem()
+    {
+        Text = x.Name,
+        Value = x.Id.ToString(),
+        Selected = ViewBag.SelectedCategory != null ? ViewBag.SelectedCategory == x.Id : false
+    });
+
+    var selectListCLv3 = CgryLv2.Select(x => new SelectListItem()
+    {
+        Text = x.Name,
+        Value = x.Id.ToString(),
+        Selected = ViewBag.SelectedCategory != null ? ViewBag.SelectedCategory == x.Id : false
+    });
+
+}
+
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $("#mess").fadeOut('slow');
+        }, 5000)
+
+        //$("#mess").empty().text("Mọi thông báo sẽ hiển thị ở đây");
+    </script>
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Danh sách danh mục</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách danh mục</li>
+    </ol>
+
+    <div class="row">
+        <div id="msgAlert" class="alert alert-success" role="alert" style="height:60px">
+            @{
+                if (ViewBag.successMsg != null)
+                {
+                    <span id="mess">
+                        @ViewBag.successMsg
+                        @if (ViewBag.AddedProductId != null)
+                        {<a href="@($"/product-detail/{ViewBag.AddedProductId}")">, Xem danh mục vừa thêm - sửa</a>}
+                    </span>
+                }
+            }
+            <span style="float:right;">Mọi thông báo sẽ hiển thị ở đây</span>
+        </div>
+    </div>
+
+    @for (int i = 1; i <= 3; i++)
+    {
+        List<CategoryViewModel> list = new List<CategoryViewModel>();
+        string action = "";
+
+        switch (i)
+        {
+            case 1:
+                list = CgryLv1;
+                action = "CreateCategory";
+                break;
+            case 2:
+                list = CgryLv2;
+                action = "CreateCategoryLv2";
+                break;
+            case 3:
+                list = CgryLv3;
+                action = "CreateCategoryLv3";
+                break;
+        }
+
+        <div class="card-header" style="background-color: #212529; color: rgba(255, 255, 255, 0.5); border-radius:5px;">
+            <span>Category level @i</span>
+            <a class="btn btn-success" asp-action="@action" asp-controller="Category">Thêm mới</a>
+            @if (i != 1)
+            {
+                <form asp-action="Index" method="get">
+                    <div class="row">
+                        <div class="col-md-4">
+                            @*value = @ViewBag.keyword for keep it don't disapear on new page*@
+                            @*name = keywork so we can get it like parameter in Index get method*@
+                            <input type="text" value="@ViewBag.keyword" class="form-control" name="keyword" />
+                        </div>
+                        @if (i == 2)
+                        {
+                            <input name="categoryLvFilter" type="hidden" value="2" />
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="selectListCLv2" class="form-control">
+                                    <option>---chọn danh mục---</option>
+                                </select>
+                            </div>}
+                        @if (i == 3)
+                        {
+                            <input name="categoryLvFilter" type="hidden" value="3" />
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="selectListCLv3" class="form-control">
+                                    <option>---chọn danh mục---</option>
+                                </select>
+                            </div>}
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Tìm</button>
+                            <button type="button" onclick="window.location.href='/Product/Index'" class="btn-dark">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+        if (list.Count > 0)
+        {
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Mã danh mục
+                            </th>
+                            @if (i != 1)
+                            {
+                                <th>
+                                    Mã danh mục cha
+                                </th>
+                            }
+                            <th>
+                                Tên danh mục
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in list)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                @if (i != 1)
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ParentID)
+                                    </td>
+                                }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new {id=item.Id }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <br />
+            <br />
+        }
+    }
+</div>
+
