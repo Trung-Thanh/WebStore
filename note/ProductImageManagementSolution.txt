@@ -1,0 +1,5 @@
+multiple upload image solution
+- use IFormFileColection
+
+show mutiple image 
+- use foreign key of table Products: 

@@ -1,0 +1,143 @@
+﻿@using eShopSolution.ViewModels.Common;
+
+@model PageResult<eShopSolution.ViewModels.Catalog.CMProductViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            $("#mess").fadeOut('slow');
+        }, 5000)
+
+        //$("#mess").empty().text("Mọi thông báo sẽ hiển thị ở đây");
+    </script>
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    @*the parameters on query*@
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-4">
+                                @*value = @ViewBag.keyword for keep it don't disapear on new page*@
+                                @*name = keywork so we can get it like parameter in Index get method*@
+                                <input type="text" value="@ViewBag.keyword" class="form-control" name="keyword" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="@ViewBag.Categories" class="form-control">
+                                    <option>---chọn danh mục---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="card-body">
+            @*@if (ViewBag.successMsg != null)
+            {
+                <div class="row">
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.successMsg @{if (ViewBag.AddedProductId != null)
+                            {<a href="@($"/product-detail/{ViewBag.AddedProductId}")">, Xem sản phầm vừa thêm/sửa</a>}
+                        }
+                    </div>
+                </div>
+            }*@
+            <div class="row">
+                <div id="msgAlert" class="alert alert-success" role="alert" style="height:60px">
+                    @{
+                        if (ViewBag.successMsg != null)
+                        {
+                            <span id="mess">
+                                @ViewBag.successMsg
+                            @if (ViewBag.AddedProductId != null)
+                            {<a href="@($"/product-detail/{ViewBag.AddedProductId}")">, Xem sản phầm vừa thêm - sửa</a>}
+                        </span>
+                    }
+                    }
+                    <span style="float:right;">Mọi thông báo sẽ hiển thị ở đây</span>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tên sản phẩm
+                            </th>
+                            <th>
+                                Mã sản phẩm
+                            </th>
+                            <th>
+                                Giá nhập
+                            </th>
+                            <th>
+                                Giá bán
+                            </th>
+                            <th>
+                                Số Lượng tồn
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OriginalPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Stock)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                                    @Html.ActionLink("Xem", "Detail", new { id = item.Id }) |
+                                    @Html.ActionLink("Gán danh mục", "CategoryAssign", new { id = item.Id }) |
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @*add html paging and blazor code*@
+            @*async*@
+            @await Component.InvokeAsync("Pager", Model)
+        </div>
+
+    </div>
+</div>
+

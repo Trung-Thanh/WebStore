@@ -1,0 +1,74 @@
+﻿@model aShopSolution.AdminApp.Models.CreateSubCategoryViewModel
+
+@{
+    ViewData["Title"] = "Tạo danh mục cấp 2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    var selectList = Model.ListParents.Select(x => new SelectListItem()
+    {
+        Text = x.Name,
+        Value = x.Id.ToString(),
+        //Selected = ViewBag.SelectedCategory != null ? ViewBag.SelectedCategory == x.Id : false
+    });
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Tạo danh mục cấp 2</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Tạo danh mục cấp 2</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Category">Về danh sách</a>
+            @*<a class="btn btn-primary" href="@($"/Edit/{Model.Id}")">Sửa</a>*@
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="CreateCategoryLv3" method="post" asp-controller="Category" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-md-4">
+                            <select asp-for="ucCategoryRequest.parentId" name="parentId" asp-items="selectList" class="form-control">
+                                <option>---chọn danh mục---</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ucCategoryRequest.Name"  class="control-label"></label>
+                            <input asp-for="ucCategoryRequest.Name" name="Name" class="form-control" />
+                            <input name="Name" type="hidden"/>
+                            <span asp-validation-for="ucCategoryRequest.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ucCategoryRequest.SeoAlias" class="control-label"></label>
+                            <input asp-for="ucCategoryRequest.SeoAlias" name="SeoAlias" class="form-control" />
+                            <span asp-validation-for="ucCategoryRequest.SeoAlias" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ucCategoryRequest.SeoTitle" class="control-label"></label>
+                            <input asp-for="ucCategoryRequest.SeoTitle" name="SeoTitle" class="form-control" />
+                            <span asp-validation-for="ucCategoryRequest.SeoTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ucCategoryRequest.SeoDescription" class="control-label"></label>
+                            <input asp-for="ucCategoryRequest.SeoDescription" name="SeoDescription" class="form-control" />
+                            <span asp-validation-for="ucCategoryRequest.SeoDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

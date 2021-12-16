@@ -23,10 +23,12 @@ namespace eShopSolution.Data.Configurations
 
             builder.Property(x => x.SeoAlias).IsRequired().HasMaxLength(200);
 
-            builder.Property(x => x.Details).HasMaxLength(500);
+            builder.Property(x => x.Details).HasMaxLength(2000);
+
+            builder.Property(x => x.Description).HasMaxLength(800);
 
             // thống nhất là language id có dội dài 5, nếu k giống nhau sẽ không tạo được khóa ngoại
-            
+
 
             //throw new NotImplementedException();
         }

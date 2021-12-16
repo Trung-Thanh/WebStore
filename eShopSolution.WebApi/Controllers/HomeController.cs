@@ -18,7 +18,7 @@ namespace eShopSolution.WebApi.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index1()
         {
             return Ok();
         }
