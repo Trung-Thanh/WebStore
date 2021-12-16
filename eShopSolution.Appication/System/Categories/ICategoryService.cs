@@ -10,6 +10,7 @@ namespace eShopSolution.Appication.System.Categories
     {
         Task<List<CategoryViewModel>> GetAll(string languageId);
         Task<CategoryViewModel> GetById(int id, string languageId);
+        Task<bool> CreateCategory(CUCategoryRequest request);
 
     }
 }

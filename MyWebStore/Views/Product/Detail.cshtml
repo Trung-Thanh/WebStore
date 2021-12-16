@@ -23,44 +23,69 @@
             <img src="@(_conf["ProductImageAddress"] + Model.Product.ThumbnailImage)" style="width:100%" alt="@Model.Product.Name" />
         </a>
 
-
         <div id="differentview" class="moreOptopm carousel slide">
             <div class="carousel-inner">
-                @*3 first images*@
-                <div class="item active">
-                    <a href="themes/images/products/large/f1.jpg">
-                        <img style="width:29%"
-                             src="themes/images/products/large/f1.jpg" alt="" />
-                    </a>
-                    <a href="themes/images/products/large/f2.jpg">
-                        <img style="width:29%"
-                             src="themes/images/products/large/f2.jpg" alt="" />
-                    </a>
-                    <a href="themes/images/products/large/f3.jpg">
-                        <img style="width:29%"
-                             src="themes/images/products/large/f3.jpg" alt="" />
-                    </a>
-                </div>
-                @*3 next images*@
-                <div class="item">
-                    <a href="themes/images/products/large/f3.jpg">
-                        <img style="width:29%"
-                             src="themes/images/products/large/f3.jpg" alt="" />
-                    </a>
-                    <a href="themes/images/products/large/f1.jpg">
-                        <img style="width:29%"
-                             src="themes/images/products/large/f1.jpg" alt="" />
-                    </a>
-                    <a href="themes/images/products/large/f2.jpg">
-                        <img style="width:29%"
-                             src="themes/images/products/large/f2.jpg" alt="" />
-                    </a>
-                </div>
+                @{
+                    int numberOfLittleImage = Model.Product.LittleFingernails.Count();
+                    if (numberOfLittleImage > 0)
+                    {
+                        int numberOfTriangle = 0;
+
+                        if (numberOfLittleImage <= 3)
+                        {
+                            numberOfTriangle = 1;
+                        }
+                        else
+                        {
+                            if (numberOfLittleImage % 3 == 0)
+                            {
+                                numberOfTriangle = numberOfLittleImage / 3;
+                            }
+                            else
+                            {
+                                numberOfTriangle = numberOfLittleImage / 3 + 1;
+                            }
+                        }
+
+                        var count = 0;
+
+                        for (int i = 0; i < numberOfTriangle; i++)
+                        {
+                            if (i == numberOfTriangle - 1 && (numberOfLittleImage % 3 > 0))
+                            {
+                                <div class="item@(i==0?" active":"")">
+                                    @for (int k = 0; k < (numberOfLittleImage % 3); k++)
+                                    {
+                                        <a href="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count])">
+                                            <img style="width:29%" src="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count])" alt="" />
+                                        </a>
+                                        count++;
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="item@(i==0?" active":"")">
+                                    <a href="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count])">
+                                        <img style="width:29%" src="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count])" alt="" />
+                                    </a>
+                                    <a href="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count+1])">
+                                        <img style="width:29%" src="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count+1])" alt="" />
+                                    </a>
+                                    <a href="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count+2])">
+                                        <img style="width:29%" src="@(_conf["ProductImageAddress"] + Model.Product.LittleFingernails[count+2])" alt="" />
+                                    </a>
+                                </div>
+                                count += 3;
+                            }
+                        }
+                    }
+                }
             </div>
-            <!--
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                -->
+
+            <a class="left carousel-control" href="#differentview" data-slide="prev">&lsaquo;</a>
+            <a class="right carousel-control" href="#differentview" data-slide="next">&lsaquo;</a>
+
         </div>
 
         @*tool bar*@
@@ -86,14 +111,14 @@
         <form class="form-horizontal qtyFrm">
             <div class="control-group">
                 @*price*@
-                <label class="control-label"><span>@Model.Product.Price.ToString("C",culture)</span></label>
+                <label class="control-label"><span>@Model.Product.Price.ToString("C", culture)</span></label>
                 @*order*@
-            <div class="controls">             
-                <span>@($"{_loc["qty"]} ")</span> <input type="number" class="span1" />
-                <button type="submit" class="btn btn-large btn-primary pull-right">
-                    <localize>Add to</localize><i class=" icon-shopping-cart"></i>
-                </button>
-            </div>
+                <div class="controls">
+                    <span>@($"{_loc["qty"]} ")</span> <input type="number" class="span1" />
+                    <button type="submit" class="btn btn-large btn-primary pull-right">
+                        <localize>Add to</localize><i class=" icon-shopping-cart"></i>
+                    </button>
+                </div>
             </div>
         </form>
 
@@ -479,5 +504,3 @@
         </div>
     </div>
 </div>
-
-

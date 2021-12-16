@@ -24,6 +24,7 @@ namespace eShopSolution.ApiEntegration
             _httpContextAccessor = httpContextAccessor;
         }
 
+
         protected async Task<ApiResult<TResponse>> GetAsync_UseApiResult<TResponse>(string url, bool addToken)
         {
             var client = _httpClientFactory.CreateClient();

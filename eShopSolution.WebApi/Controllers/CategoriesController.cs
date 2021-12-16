@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eShopSolution.Appication.System.Categories;
+using eShopSolution.ViewModels.Catalog.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +33,25 @@ namespace eShopSolution.WebApi.Controllers
         {
             var category = await _categoryService.GetById(id, languageId);
             return Ok(category);
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateCategory([FromForm] CUCategoryRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var resutl = await _categoryService.CreateCategory(request);
+
+            if (!resutl)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }
